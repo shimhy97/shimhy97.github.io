@@ -1,0 +1,85 @@
+name: Weekly Tech Digest
+
+on:
+  schedule:
+    # Monday 09:00 Asia/Seoul = Monday 00:00 UTC
+    - cron: "0 0 * * 1"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  generate:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+
+      - name: Set up Python
+        uses: actions/setup-python@v6
+        with:
+          python-version: "3.12"
+          cache: "pip"
+          cache-dependency-path: "scripts/weekly-tech/requirements.txt"
+
+      - name: Install weekly tech dependencies
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install -r scripts/weekly-tech/requirements.txt
+
+      - name: Generate weekly digest
+        env:
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+          OPENAI_MODEL: ${{ vars.OPENAI_MODEL }}
+          WEEKLY_TECH_SUMMARY_MODE: ${{ vars.WEEKLY_TECH_SUMMARY_MODE || 'auto' }}
+        run: |
+          python scripts/weekly-tech/generate_digest.py --write-post
+
+      - name: Read run metadata
+        id: digest
+        run: |
+          python - <<'PY' >> "$GITHUB_OUTPUT"
+          import json
+          from pathlib import Path
+
+          payload = json.loads(Path("data/weekly-tech/output/latest-run.json").read_text(encoding="utf-8"))
+          post_path = payload.get("post_path") or ""
+          print(f"post_created={'true' if post_path else 'false'}")
+          print(f"post_path={post_path}")
+          print(f"selected_count={payload.get('selected_count', 0)}")
+          print(f"summary_mode={payload.get('summary_mode_used', 'unknown')}")
+          PY
+
+      - name: Run Jekyll build
+        if: steps.digest.outputs.post_created == 'true'
+        run: ./scripts/blog-build.sh
+
+      - name: Upload digest metadata
+        uses: actions/upload-artifact@v7
+        with:
+          name: weekly-tech-digest-run
+          path: data/weekly-tech/output
+
+      - name: Create pull request
+        if: steps.digest.outputs.post_created == 'true'
+        uses: peter-evans/create-pull-request@v8
+        with:
+          branch: automation/weekly-tech-digest
+          delete-branch: true
+          commit-message: "발행:주간 최신 기술 다이제스트 초안 생성"
+          title: "발행:주간 최신 기술 다이제스트 초안 생성"
+          body: |
+            ## 자동 생성 결과
+
+            - 생성 파일: `${{ steps.digest.outputs.post_path }}`
+            - 선별 항목 수: `${{ steps.digest.outputs.selected_count }}`
+            - 요약 방식: `${{ steps.digest.outputs.summary_mode }}`
+
+            이 PR은 공식 소스 기반 주간 다이제스트 자동화 workflow가 생성했습니다.
+          labels: |
+            automation
+            weekly-digest
