@@ -1,0 +1,25 @@
+# Ralph Progress Log
+
+## Codebase Patterns
+- GitHub Pages 호환성을 우선하므로 Jekyll 버전은 `github-pages` gem 기준으로 맞춘다.
+- 사이트 전역 메타데이터와 author 정보는 `_config.yml`에서 관리한다.
+- 상단 내비게이션은 `_data/navigation.yml`에서 관리한다.
+- 기술 블로그의 기본 품질 체크는 `bundle exec jekyll build`로 둔다.
+
+Started: 2026-04-03
+---
+
+## 2026-04-03 11:20 KST - Manual bootstrap
+Thread: manual
+- Jekyll + GitHub Pages + Minimal Mistakes 기반 블로그 골격을 생성했다.
+- GitHub Actions 기반 Pages 배포 워크플로를 추가했다.
+- Ralph 루프용 `scripts/ralph`, `prd.json`, `tasks/` 구조를 프로젝트 안에 맞췄다.
+- Files changed:
+  - `_config.yml`
+  - `.github/workflows/pages.yml`
+  - `scripts/ralph/`
+  - `tasks/`
+- Learnings for future iterations:
+  - 사용자 블로그로 배포하려면 GitHub 저장소 이름이 `shimhy97.github.io` 여야 한다.
+  - 현재 로컬 시스템 Ruby는 오래돼 있으므로 `rbenv` 기반 Ruby를 먼저 맞추는 편이 안전하다.
+---
