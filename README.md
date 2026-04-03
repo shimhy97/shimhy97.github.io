@@ -27,11 +27,13 @@ shimhy97/shimhy97.github.io
 ```text
 .
 ├── .github/workflows/pages.yml
+├── docs/
 ├── _config.yml
 ├── _data/navigation.yml
 ├── _pages/
 ├── _posts/
 ├── assets/css/main.scss
+├── specs/
 ├── scripts/
 ├── tasks/
 ├── prd.json
@@ -206,3 +208,11 @@ brew install jq
 3. `bundle install` 후 `./scripts/blog-serve.sh`로 로컬 확인을 한다.
 4. `About` 페이지와 author 정보를 본인 소개로 다듬는다.
 5. 첫 번째 데이터사이언스 글을 한 편 올린다.
+
+## 주간 최신 기술 다이제스트 문서
+
+주간 최신 기술 수집, 요약, 배포 자동화를 위한 초기 기획 문서는 아래에 정리합니다.
+
+- [기능 spec](specs/001-weekly-tech-digest-agent/spec.md)
+- [업무 목적과 운영 원칙](docs/weekly-tech-digest-agent.md)
+- [개발 및 운영 workflow](docs/weekly-tech-digest-workflow.md)
