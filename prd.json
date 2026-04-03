@@ -11,7 +11,7 @@
         "_config.yml의 title, description, author 정보를 실제 운영 정보에 맞게 수정한다",
         "홈 화면 소개 문구가 데이터사이언스/기술 블로그 방향을 명확히 설명한다",
         "About 페이지 내용이 현재 경력과 다룰 주제를 반영한다",
-        "bundle exec jekyll build passes"
+        "./scripts/blog-build.sh passes"
       ],
       "priority": 1,
       "passes": false,
@@ -25,7 +25,7 @@
         "_posts/ 아래에 데이터사이언스 주제의 새 글을 1개 추가한다",
         "글에는 문제 배경, 접근 방식, 코드 또는 쿼리 예시, 회고가 포함된다",
         "카테고리와 태그가 실제 주제에 맞게 설정된다",
-        "bundle exec jekyll build passes"
+        "./scripts/blog-build.sh passes"
       ],
       "priority": 2,
       "passes": false,
@@ -39,7 +39,7 @@
         "새 글 작성을 위한 Markdown 템플릿 파일 또는 문서를 추가한다",
         "front matter, 권장 섹션, 코드 블록 예시가 포함된다",
         "README 또는 별도 문서에 글 발행 체크리스트가 정리된다",
-        "bundle exec jekyll build passes"
+        "./scripts/blog-build.sh passes"
       ],
       "priority": 3,
       "passes": false,
@@ -53,7 +53,7 @@
         "기본 social preview 또는 대표 이미지 전략이 문서화되거나 자산이 추가된다",
         "404 페이지 또는 기본 안내 페이지를 추가한다",
         "사이트 설명과 피드/SEO 관련 설정이 누락 없이 정리된다",
-        "bundle exec jekyll build passes"
+        "./scripts/blog-build.sh passes"
       ],
       "priority": 4,
       "passes": false,
@@ -67,7 +67,7 @@
         "GitHub 저장소 생성, 원격 연결, Pages 활성화 순서가 문서화된다",
         "로컬 개발, 초안 작성, 배포 확인 절차가 정리된다",
         "Ralph 사용 흐름과 수동 작업 흐름의 역할 분담이 설명된다",
-        "bundle exec jekyll build passes"
+        "./scripts/blog-build.sh passes"
       ],
       "priority": 5,
       "passes": false,

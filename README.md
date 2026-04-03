@@ -1,11 +1,11 @@
 # Jekyll GitHub 기술 블로그 시작점
 
-이 저장소는 **Jekyll + GitHub Pages + Minimal Mistakes** 조합으로 시작하는 기술 블로그 기본 골격입니다.
+이 저장소는 **Jekyll + GitHub Actions Pages 배포 + Minimal Mistakes** 조합으로 시작하는 기술 블로그 기본 골격입니다.
 
 데이터사이언티스트가 기술 글을 자주 올린다는 전제를 두고, 다음을 먼저 세팅했습니다.
 
-- GitHub Pages 호환 Jekyll 설정
-- 많이 쓰는 블로그 테마인 `Minimal Mistakes` 원격 테마 구성
+- GitHub Actions 기반 Pages 배포 설정
+- 많이 쓰는 블로그 테마인 `Minimal Mistakes` gem 구성
 - 글 목록, 태그, 카테고리, 소개 페이지
 - GitHub Actions 기반 Pages 배포 워크플로
 - 프로젝트 내부 `scripts/ralph` 구조와 `prd.json`, `progress.txt`, `tasks/` 기반 Ralph 루프 시작점
@@ -32,7 +32,7 @@ shimhy97/shimhy97.github.io
 ├── _pages/
 ├── _posts/
 ├── assets/css/main.scss
-├── scripts/ralph/
+├── scripts/
 ├── tasks/
 ├── prd.json
 └── progress.txt
@@ -44,21 +44,14 @@ shimhy97/shimhy97.github.io
 
 - Jekyll 기술 블로그에서 매우 널리 쓰입니다.
 - 글 중심 구조라서 분석/기술 포스트와 잘 맞습니다.
-- GitHub Pages에서 `remote_theme` 방식으로 비교적 안정적으로 운영할 수 있습니다.
+- GitHub Actions로 빌드하기 때문에 로컬과 배포 환경을 더 일관되게 맞출 수 있습니다.
 - 태그, 카테고리, 목차, SEO 같은 기본 요소가 이미 정리돼 있습니다.
 
 나중에 디자인을 더 공격적으로 바꾸고 싶으면 `Chirpy` 같은 테마로 옮길 수 있지만, **처음 시작할 때는 배포와 글 작성 흐름이 단순한 쪽이 유리**합니다.
 
 ## 로컬 개발 환경 세팅
 
-현재 머신 상태를 확인한 결과:
-
-- 시스템 Ruby는 `2.6.10`
-- `bundler`는 오래된 `1.17.2`
-- `jekyll` 없음
-- `jq` 없음
-
-그래서 **시스템 Ruby를 그대로 쓰지 말고 `rbenv` 기반으로 프로젝트 전용 Ruby를 쓰는 방식**을 권장합니다.
+시스템 Ruby는 기본 제공 버전이 오래된 경우가 많기 때문에, 이 저장소는 **`rbenv` 기반 프로젝트 전용 Ruby**를 전제로 합니다.
 
 ### 1. 필수 도구 설치
 
@@ -99,7 +92,7 @@ bundle install
 ### 5. 로컬 서버 실행
 
 ```bash
-bundle exec jekyll serve --livereload
+./scripts/blog-serve.sh
 ```
 
 브라우저에서 아래 주소를 열면 됩니다.
@@ -174,7 +167,7 @@ progress.txt
 Ralph 프롬프트에는 이 프로젝트 기본 품질 체크를 아래처럼 잡아두었습니다.
 
 ```bash
-bundle exec jekyll build
+./scripts/blog-build.sh
 ```
 
 즉 UI든 글이든 설정이든, 기본적으로 **빌드가 깨지지 않는지**를 확인하는 흐름입니다.
@@ -196,12 +189,20 @@ brew install jq
 
 그리고 Ralph 공식 루프는 보통 `claude` 또는 `amp` 실행기를 전제로 사용합니다. 이 저장소의 `ralph.sh`도 같은 흐름을 따르되, `prd.json`과 `progress.txt` 위치만 **프로젝트 루트 기준**으로 맞췄습니다.
 
+## 자주 쓰는 명령
+
+```bash
+./scripts/blog-build.sh
+./scripts/blog-serve.sh
+./scripts/ralph/ralph.sh --tool claude 5
+```
+
 ## 추천 다음 단계
 
 초기 세팅 다음으로는 아래 순서를 권장합니다.
 
 1. GitHub 원격 저장소를 `shimhy97.github.io`로 만든다.
 2. 로컬 Ruby 환경을 `rbenv`로 맞춘다.
-3. `bundle install` 후 `bundle exec jekyll serve --livereload`로 로컬 확인을 한다.
+3. `bundle install` 후 `./scripts/blog-serve.sh`로 로컬 확인을 한다.
 4. `About` 페이지와 author 정보를 본인 소개로 다듬는다.
 5. 첫 번째 데이터사이언스 글을 한 편 올린다.

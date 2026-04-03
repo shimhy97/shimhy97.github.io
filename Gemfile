@@ -1,5 +1,11 @@
 source "https://rubygems.org"
 
-gem "github-pages", "~> 232", group: :jekyll_plugins
-gem "jekyll-include-cache", group: :jekyll_plugins
+gem "jekyll", "~> 4.4"
+gem "minimal-mistakes-jekyll", "~> 4.28"
+gem "jekyll-feed", "~> 0.17"
+gem "jekyll-paginate", "~> 1.1"
+gem "jekyll-seo-tag", "~> 2.8"
+gem "jekyll-sitemap", "~> 1.4"
+gem "jekyll-include-cache", "~> 0.2"
+gem "faraday-retry", "~> 2.3"
 gem "webrick", "~> 1.8"

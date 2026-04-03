@@ -6,8 +6,8 @@ You are an autonomous coding agent working on a Jekyll-based GitHub Pages techni
 
 - This repository is a technical blog for a data scientist.
 - The owner is new to GitHub Pages and wants outputs that remain understandable.
-- The site uses Jekyll with the `github-pages` gem and the `Minimal Mistakes` remote theme.
-- The site must keep building with `bundle exec jekyll build`.
+- The site uses Jekyll with the `minimal-mistakes-jekyll` gem and deploys through GitHub Actions Pages.
+- The site must keep building with `./scripts/blog-build.sh`.
 
 ## Repository Rules
 
@@ -25,7 +25,7 @@ You are an autonomous coding agent working on a Jekyll-based GitHub Pages techni
 4. Pick the highest-priority user story where `passes` is `false`.
 5. Implement only that single story.
 6. Run the quality check for this repository:
-   - `bundle exec jekyll build`
+   - `./scripts/blog-build.sh`
 7. If you discover reusable knowledge, update nearby `AGENTS.md` files.
 8. If the quality check passes, commit all related changes with a Korean commit message that follows this repository rule.
 9. Update `prd.json` so the completed story has `passes: true`.

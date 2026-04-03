@@ -35,3 +35,9 @@ brew install jq
 ```
 
 위 명령은 최대 5회 반복하면서 `prd.json`에서 아직 완료되지 않은 가장 높은 우선순위 스토리 하나씩 처리합니다.
+
+이 저장소에서 Ralph가 호출해야 하는 기본 품질 체크는 아래입니다.
+
+```bash
+./scripts/blog-build.sh
+```
