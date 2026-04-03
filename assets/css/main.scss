@@ -1,0 +1,16 @@
+---
+---
+
+@import "minimal-mistakes";
+
+/*
+ * 기본 테마는 유지하고, 기술 블로그에서 자주 보는 긴 코드 블록과
+ * 요약 박스 가독성만 가볍게 보정한다.
+ */
+.page__content pre {
+  font-size: 0.92rem;
+}
+
+.notice--primary {
+  border-left: 4px solid #1f6feb;
+}

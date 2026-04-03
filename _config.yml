@@ -1,0 +1,79 @@
+title: "Shim's Tech Notes"
+description: "데이터사이언티스트의 분석, 실험, ML 시스템, 생산성 기록"
+url: "https://shimhy97.github.io"
+baseurl: ""
+repository: "shimhy97/shimhy97.github.io"
+lang: "ko-KR"
+locale: "ko-KR"
+timezone: "Asia/Seoul"
+
+remote_theme: "mmistakes/minimal-mistakes@4.28.0"
+minimal_mistakes_skin: "default"
+
+search: true
+markdown: kramdown
+highlighter: rouge
+permalink: /:categories/:title/
+paginate: 5
+paginate_path: /page:num/
+
+logo: null
+
+author:
+  name: "Shim"
+  bio: "데이터사이언티스트. 실험, 모델링, 데이터 파이프라인, MLOps를 정리합니다."
+  location: "Seoul, South Korea"
+  links:
+    - label: "GitHub"
+      icon: "fab fa-fw fa-github"
+      url: "https://github.com/shimhy97"
+
+plugins:
+  - jekyll-include-cache
+  - jekyll-paginate
+  - jekyll-feed
+  - jekyll-sitemap
+  - jekyll-seo-tag
+
+include:
+  - _pages
+
+collections:
+  pages:
+    output: true
+    permalink: /:path/
+
+defaults:
+  - scope:
+      path: ""
+      type: posts
+    values:
+      layout: single
+      author_profile: true
+      read_time: true
+      show_date: true
+      share: true
+      related: true
+      toc: true
+      toc_sticky: true
+      classes: wide
+  - scope:
+      path: "_pages"
+      type: pages
+    values:
+      layout: single
+      author_profile: true
+
+category_archive:
+  type: liquid
+  path: /categories/
+
+tag_archive:
+  type: liquid
+  path: /tags/
+
+footer:
+  links:
+    - label: "GitHub"
+      icon: "fab fa-fw fa-github"
+      url: "https://github.com/shimhy97"
