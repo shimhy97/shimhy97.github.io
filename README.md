@@ -197,6 +197,8 @@ brew install jq
 ./scripts/blog-build.sh
 ./scripts/blog-serve.sh
 ./scripts/ralph/ralph.sh --tool claude 5
+bash ./scripts/weekly-tech-generate.sh --write-post
+source .venv/bin/activate && python -m unittest discover -s tests -p 'test*.py' -v
 ```
 
 ## 추천 다음 단계
@@ -214,5 +216,23 @@ brew install jq
 주간 최신 기술 수집, 요약, 배포 자동화를 위한 초기 기획 문서는 아래에 정리합니다.
 
 - [기능 spec](specs/001-weekly-tech-digest-agent/spec.md)
+- [구현 계획](specs/001-weekly-tech-digest-agent/plan.md)
+- [작업 목록](specs/001-weekly-tech-digest-agent/tasks.md)
 - [업무 목적과 운영 원칙](docs/weekly-tech-digest-agent.md)
 - [개발 및 운영 workflow](docs/weekly-tech-digest-workflow.md)
+
+## 주간 최신 기술 다이제스트 실행
+
+로컬에서 실제 주간 글 초안을 생성하려면 아래 명령을 사용합니다.
+
+```bash
+bash ./scripts/weekly-tech-generate.sh --write-post
+```
+
+테스트는 표준 라이브러리 `unittest` 기준으로 아래처럼 실행합니다.
+
+```bash
+source .venv/bin/activate && python -m unittest discover -s tests -p 'test*.py' -v
+```
+
+자동 실행은 [weekly-tech-digest.yml](.github/workflows/weekly-tech-digest.yml) 에서 매주 월요일 09:00 KST에 돌아가며, 새 글이 생성되면 PR을 자동으로 엽니다.

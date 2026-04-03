@@ -40,3 +40,27 @@ Thread: manual
   - 초기 자동화는 direct publish보다 PR 생성 모드가 운영 리스크를 낮춘다.
   - 소스 확장은 개수보다 공식성, 변경 신호 밀도, 수집 안정성을 우선 평가해야 한다.
 ---
+
+## 2026-04-03 15:15 KST - Weekly tech digest implementation
+Thread: manual
+- `specs/001-weekly-tech-digest-agent/plan.md`와 `tasks.md`를 작성하고 Ralph용 PRD를 주간 다이제스트 기능 기준으로 교체했다.
+- `data/weekly-tech/sources.yml`, `scripts/weekly-tech/`, `tests/test_weekly_tech_pipeline.py`를 추가해 공식 소스 수집, quota 기반 선별, OpenAI/추출형 요약, Markdown 렌더링 파이프라인을 구현했다.
+- 실제 실행으로 `_posts/2026-04-03-weekly-tech-roundup.md`를 생성했고 `data/weekly-tech/output/latest-run.json`에 실행 메타데이터를 남겼다.
+- `.github/workflows/weekly-tech-digest.yml`을 추가해 매주 월요일 09:00 KST 자동 실행과 PR 생성을 연결했다.
+- Files changed:
+  - `specs/001-weekly-tech-digest-agent/plan.md`
+  - `specs/001-weekly-tech-digest-agent/tasks.md`
+  - `tasks/prd-weekly-tech-digest-agent-v1.md`
+  - `prd.json`
+  - `data/weekly-tech/`
+  - `scripts/weekly-tech/`
+  - `scripts/weekly-tech-generate.sh`
+  - `.github/workflows/weekly-tech-digest.yml`
+  - `tests/test_weekly_tech_pipeline.py`
+  - `_posts/2026-04-03-weekly-tech-roundup.md`
+  - `README.md`
+- Learnings for future iterations:
+  - 같은 소스의 canary 릴리즈가 주간 글을 과도하게 점유하지 않도록 source별 최대 선택 수 제한이 필요하다.
+  - OpenAI API 키가 없는 환경에서도 PR 검토용 초안은 extractive fallback으로 충분히 생성할 수 있다.
+  - 일부 공식 피드는 403을 반환할 수 있어 RSS 실패 시 HTML listing fallback을 추가 확장할 여지가 있다.
+---

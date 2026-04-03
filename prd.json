@@ -14,8 +14,8 @@
         "중복 항목이 병합되거나 제거된다"
       ],
       "priority": 1,
-      "passes": false,
-      "notes": ""
+      "passes": true,
+      "notes": "RSS, GitHub Releases API, HTML listing 수집기를 구현했고 20개 소스를 sources.yml에 등록했다."
     },
     {
       "id": "US-002",
@@ -28,8 +28,8 @@
         "./scripts/blog-build.sh passes"
       ],
       "priority": 2,
-      "passes": false,
-      "notes": ""
+      "passes": true,
+      "notes": "extractive fallback으로 실제 포스트를 생성했고 Jekyll build를 통과했다."
     },
     {
       "id": "US-003",
@@ -42,8 +42,8 @@
         "run metadata artifact가 업로드된다"
       ],
       "priority": 3,
-      "passes": false,
-      "notes": ""
+      "passes": true,
+      "notes": "주간 workflow와 create-pull-request, upload-artifact 단계를 추가했다."
     },
     {
       "id": "US-004",
@@ -56,8 +56,8 @@
         "README와 progress log가 최신 상태를 반영한다"
       ],
       "priority": 4,
-      "passes": false,
-      "notes": ""
+      "passes": true,
+      "notes": "2026-04-03 주간 포스트를 생성했고 unittest와 blog build를 검증했다."
     }
   ]
 }
