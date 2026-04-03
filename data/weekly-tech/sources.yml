@@ -1,0 +1,252 @@
+global:
+  timezone: "Asia/Seoul"
+  lookback_days: 7
+  max_items: 10
+  min_items: 6
+  max_items_per_source: 2
+  summary_mode: "auto"
+  category_labels:
+    ai_platform: "AI / LLM 플랫폼"
+    web_runtime: "웹 / 프론트엔드 / 런타임"
+    cloud_devtools: "클라우드 / DevTools / 플랫폼"
+    oss_release: "OSS 릴리즈 / 보안"
+  post:
+    categories:
+      - "weekly"
+      - "roundup"
+    tags:
+      - "weekly-digest"
+      - "it-trends"
+      - "automation"
+      - "official-sources"
+    slug_prefix: "weekly-tech-roundup"
+  category_quotas:
+    ai_platform: 2
+    web_runtime: 2
+    cloud_devtools: 3
+    oss_release: 3
+  include_keywords:
+    - "release"
+    - "released"
+    - "releases"
+    - "changelog"
+    - "general availability"
+    - "availability"
+    - "preview"
+    - "beta"
+    - "deprecation"
+    - "deprecated"
+    - "breaking"
+    - "security"
+    - "api"
+    - "sdk"
+    - "model"
+    - "launch"
+    - "launches"
+    - "announcing"
+    - "introducing"
+    - "now available"
+    - "rollout"
+    - "migration"
+    - "ga"
+  exclude_keywords:
+    - "webinar"
+    - "event"
+    - "meetup"
+    - "conference"
+    - "hiring"
+    - "customer story"
+    - "case study"
+    - "podcast"
+    - "sweepstakes"
+    - "register now"
+    - "watch on demand"
+    - "acquires"
+    - "acquisition"
+    - "customer story"
+    - "customers"
+
+sources:
+  - id: "github_changelog"
+    name: "GitHub Changelog"
+    source_type: "rss"
+    source_kind: "changelog"
+    category: "cloud_devtools"
+    url: "https://github.blog/changelog/feed/"
+    enabled: true
+    weight: 1.4
+
+  - id: "aws_news_blog"
+    name: "AWS News Blog"
+    source_type: "rss"
+    source_kind: "changelog"
+    category: "cloud_devtools"
+    url: "https://aws.amazon.com/blogs/aws/feed/"
+    enabled: true
+    weight: 1.2
+
+  - id: "openai_news"
+    name: "OpenAI News"
+    source_type: "rss"
+    source_kind: "blog"
+    category: "ai_platform"
+    url: "https://openai.com/news/rss.xml"
+    enabled: true
+    weight: 1.3
+
+  - id: "microsoft_devblogs"
+    name: "Microsoft Dev Blogs"
+    source_type: "rss"
+    source_kind: "blog"
+    category: "cloud_devtools"
+    url: "https://devblogs.microsoft.com/feed/"
+    enabled: true
+    weight: 1.0
+
+  - id: "google_developers_blog"
+    name: "Google Developers Blog"
+    source_type: "rss"
+    source_kind: "blog"
+    category: "cloud_devtools"
+    url: "https://developers.googleblog.com/feeds/posts/default?alt=rss"
+    enabled: true
+    weight: 1.0
+
+  - id: "react_blog"
+    name: "React Blog"
+    source_type: "rss"
+    source_kind: "blog"
+    category: "web_runtime"
+    url: "https://react.dev/rss.xml"
+    enabled: true
+    weight: 1.3
+
+  - id: "node_blog"
+    name: "Node.js Blog"
+    source_type: "rss"
+    source_kind: "blog"
+    category: "web_runtime"
+    url: "https://nodejs.org/en/feed/blog.xml"
+    enabled: true
+    weight: 1.3
+
+  - id: "kubernetes_blog"
+    name: "Kubernetes Blog"
+    source_type: "rss"
+    source_kind: "blog"
+    category: "cloud_devtools"
+    url: "https://kubernetes.io/feed.xml"
+    enabled: true
+    weight: 1.2
+
+  - id: "web_dev_blog"
+    name: "web.dev Blog"
+    source_type: "rss"
+    source_kind: "blog"
+    category: "web_runtime"
+    url: "https://web.dev/feed.xml"
+    enabled: true
+    weight: 1.0
+
+  - id: "pytorch_blog"
+    name: "PyTorch Blog"
+    source_type: "rss"
+    source_kind: "blog"
+    category: "ai_platform"
+    url: "https://pytorch.org/blog/feed.xml"
+    enabled: true
+    weight: 1.2
+
+  - id: "cloudflare_blog"
+    name: "Cloudflare Blog"
+    source_type: "rss"
+    source_kind: "changelog"
+    category: "cloud_devtools"
+    url: "https://blog.cloudflare.com/rss/"
+    enabled: true
+    weight: 1.1
+
+  - id: "nextjs_blog"
+    name: "Next.js Blog"
+    source_type: "rss"
+    source_kind: "blog"
+    category: "web_runtime"
+    url: "https://nextjs.org/feed.xml"
+    enabled: true
+    weight: 1.2
+
+  - id: "anthropic_news"
+    name: "Anthropic News"
+    source_type: "html_listing"
+    source_kind: "blog"
+    category: "ai_platform"
+    url: "https://www.anthropic.com/news"
+    item_selector: "a[href^='/news/']"
+    link_prefix: "https://www.anthropic.com"
+    enabled: true
+    weight: 1.1
+
+  - id: "vercel_changelog"
+    name: "Vercel Changelog"
+    source_type: "html_listing"
+    source_kind: "changelog"
+    category: "cloud_devtools"
+    url: "https://vercel.com/changelog"
+    item_selector: "a[href^='/changelog/']"
+    link_prefix: "https://vercel.com"
+    enabled: true
+    weight: 1.2
+
+  - id: "react_releases"
+    name: "React Releases"
+    source_type: "github_releases"
+    source_kind: "release_api"
+    category: "oss_release"
+    repo: "facebook/react"
+    enabled: true
+    weight: 1.4
+
+  - id: "node_releases"
+    name: "Node.js Releases"
+    source_type: "github_releases"
+    source_kind: "release_api"
+    category: "oss_release"
+    repo: "nodejs/node"
+    enabled: true
+    weight: 1.3
+
+  - id: "nextjs_releases"
+    name: "Next.js Releases"
+    source_type: "github_releases"
+    source_kind: "release_api"
+    category: "oss_release"
+    repo: "vercel/next.js"
+    enabled: true
+    weight: 1.3
+
+  - id: "typescript_releases"
+    name: "TypeScript Releases"
+    source_type: "github_releases"
+    source_kind: "release_api"
+    category: "oss_release"
+    repo: "microsoft/TypeScript"
+    enabled: true
+    weight: 1.3
+
+  - id: "kubernetes_releases"
+    name: "Kubernetes Releases"
+    source_type: "github_releases"
+    source_kind: "release_api"
+    category: "oss_release"
+    repo: "kubernetes/kubernetes"
+    enabled: true
+    weight: 1.3
+
+  - id: "pytorch_releases"
+    name: "PyTorch Releases"
+    source_type: "github_releases"
+    source_kind: "release_api"
+    category: "oss_release"
+    repo: "pytorch/pytorch"
+    enabled: true
+    weight: 1.2

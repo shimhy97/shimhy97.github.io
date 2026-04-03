@@ -7,3 +7,9 @@ vendor/bundle
 .DS_Store
 archive
 scripts/ralph/.last-branch
+.venv
+.pytest_cache
+__pycache__
+*.pyc
+data/weekly-tech/output/*
+!data/weekly-tech/output/.gitkeep
