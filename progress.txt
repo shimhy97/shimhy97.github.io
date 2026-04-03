@@ -64,3 +64,15 @@ Thread: manual
   - OpenAI API 키가 없는 환경에서도 PR 검토용 초안은 extractive fallback으로 충분히 생성할 수 있다.
   - 일부 공식 피드는 403을 반환할 수 있어 RSS 실패 시 HTML listing fallback을 추가 확장할 여지가 있다.
 ---
+
+## 2026-04-03 15:25 KST - Weekly tech digest deployment
+Thread: manual
+- `ralph/weekly-tech-digest-agent-v1` 브랜치를 원격에 push하고 PR #1을 생성했다.
+- PR #1을 `main`에 merge했고 GitHub Pages workflow `23936217368`가 성공적으로 완료됐다.
+- 현재 저장소 기준 주간 다이제스트 자동화와 첫 실제 글 배포가 끝났다.
+- Files changed:
+  - `specs/001-weekly-tech-digest-agent/tasks.md`
+  - `progress.txt`
+- Learnings for future iterations:
+  - Pages workflow는 성공했지만 기존 `pages.yml`이 아직 Node 20 기반 action 버전을 써서 이후 액션 메이저 버전 정리가 필요하다.
+---
