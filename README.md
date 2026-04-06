@@ -1,14 +1,24 @@
-# Jekyll GitHub 기술 블로그 시작점
+# Jekyll GitHub 기술 블로그 + LLM 위키 운영 저장소
 
-이 저장소는 **Jekyll + GitHub Actions Pages 배포 + Minimal Mistakes** 조합으로 시작하는 기술 블로그 기본 골격입니다.
+이 저장소는 **Jekyll + GitHub Actions Pages 배포 + Minimal Mistakes** 조합으로 블로그를 운영하되, 내부적으로는 `docs/llm-wiki-ENG.md`의 철학을 따라 **LLM 유지보수형 위키를 중간 계층으로 두는 구조**로 정리한 저장소입니다.
 
-데이터사이언티스트가 기술 글을 자주 올린다는 전제를 두고, 다음을 먼저 세팅했습니다.
+즉, 이 레포는 단순한 글 저장소가 아니라 아래 흐름으로 관리합니다.
+
+```text
+raw 원천 자료
+-> wiki 지식 위키
+-> _posts 공개 글
+-> GitHub Pages 배포
+```
+
+기본 세팅은 아래를 포함합니다.
 
 - GitHub Actions 기반 Pages 배포 설정
 - 많이 쓰는 블로그 테마인 `Minimal Mistakes` gem 구성
 - 글 목록, 태그, 카테고리, 소개 페이지
 - GitHub Actions 기반 Pages 배포 워크플로
 - 프로젝트 내부 `scripts/ralph` 구조와 `prd.json`, `progress.txt`, `tasks/` 기반 Ralph 루프 시작점
+- `raw/`, `wiki/`, `AGENTS.md` 기반 블로그용 LLM 위키 운영 구조
 
 ## 먼저 알아둘 점
 
@@ -26,19 +36,57 @@ shimhy97/shimhy97.github.io
 
 ```text
 .
+├── AGENTS.md
 ├── .github/workflows/pages.yml
 ├── docs/
+├── raw/
 ├── _config.yml
 ├── _data/navigation.yml
 ├── _pages/
 ├── _posts/
 ├── assets/css/main.scss
+├── wiki/
 ├── specs/
 ├── scripts/
 ├── tasks/
 ├── prd.json
 └── progress.txt
 ```
+
+## LLM 위키 운영 구조
+
+이 저장소는 블로그 글을 곧바로 `_posts/`에 적재하지 않고, 아래 3계층을 분리합니다.
+
+### 1. `raw/`
+
+원천 자료 보관 계층입니다.
+
+- `raw/inbox/`: 새로 들어온 자료
+- `raw/sources/`: 장기 보관할 원문
+- `raw/assets/`: 원문 이미지와 첨부 자료
+
+### 2. `wiki/`
+
+LLM이 유지보수하는 지식 위키 계층입니다.
+
+- `wiki/index.md`: 전체 카탈로그
+- `wiki/log.md`: 시간순 작업 로그
+- `wiki/overview.md`: 블로그 범위와 운영 관점
+- `wiki/sources/`: 원문별 요약
+- `wiki/topics/`: 개념과 주제 페이지
+- `wiki/series/`: 반복 발행 시리즈
+- `wiki/queries/`: 재사용 가치가 있는 질의응답
+- `wiki/drafts/`: 공개 글 후보 초안
+
+### 3. `_posts/`
+
+외부 공개용 최종 글만 둡니다. 가능한 한 `wiki/`에서 충분히 정리한 뒤 이 계층으로 승격합니다.
+
+상세 운영 규칙은 아래 문서를 기준으로 둡니다.
+
+- [운영 스키마](AGENTS.md)
+- [블로그 위키 workflow](docs/blog-wiki-workflow.md)
+- [철학 원문](docs/llm-wiki-ENG.md)
 
 ## 왜 이 테마를 골랐는가
 
@@ -105,7 +153,13 @@ http://127.0.0.1:4000
 
 ## 글 작성 방법
 
-새 글은 `_posts/` 아래에 아래 형식으로 추가합니다.
+새 글은 기본적으로 아래 순서를 따릅니다.
+
+1. 새 자료를 `raw/inbox/` 또는 `raw/sources/`에 넣는다.
+2. `wiki/sources/`, `wiki/topics/`, `wiki/drafts/`를 먼저 갱신한다.
+3. 공개 가치가 확인된 내용만 `_posts/`로 옮긴다.
+
+최종 공개 글 파일은 `_posts/` 아래에 아래 형식으로 추가합니다.
 
 ```text
 YYYY-MM-DD-your-post-title.md
@@ -215,6 +269,7 @@ source .venv/bin/activate && python -m unittest discover -s tests -p 'test*.py' 
 
 주간 최신 기술 수집, 요약, 배포 자동화를 위한 초기 기획 문서는 아래에 정리합니다.
 
+- [블로그 위키 workflow](docs/blog-wiki-workflow.md)
 - [기능 spec](specs/001-weekly-tech-digest-agent/spec.md)
 - [구현 계획](specs/001-weekly-tech-digest-agent/plan.md)
 - [작업 목록](specs/001-weekly-tech-digest-agent/tasks.md)

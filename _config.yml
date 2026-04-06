@@ -38,6 +38,25 @@ plugins:
 include:
   - _pages
 
+exclude:
+  - README.md
+  - AGENTS.md
+  - docs
+  - raw
+  - wiki
+  - scripts
+  - specs
+  - tasks
+  - tests
+  - data
+  - prd.json
+  - progress.txt
+  - .venv
+  - .jekyll-cache
+  - vendor
+  - Gemfile
+  - Gemfile.lock
+
 defaults:
   - scope:
       path: ""
