@@ -29,3 +29,9 @@ tags:
 - 위키 초안을 바탕으로 `_posts/2026-04-06-build-your-blog-as-an-llm-wiki.md`를 작성했다.
 - `wiki/index.md`를 갱신해 새 소스, 주제, 초안을 인덱스에 반영했다.
 - 원문, 위키, 공개 글의 3계층 운영 흐름을 이번 주 게시글 주제로 고정했다.
+
+## [2026-04-06] revise | 원본 llm-wiki gist 소개를 반영해 글 재구성
+
+- 게시글 앞부분에 Andrej Karpathy의 `llm-wiki` gist가 어떤 문서인지와 핵심 제안을 먼저 소개했다.
+- 이후 문단에서 이 저장소의 `raw/`, `wiki/`, `_posts/`, `AGENTS.md` 구조로 어떻게 번역했는지 연결하도록 흐름을 다시 짰다.
+- `wiki/sources/llm-wiki.md`와 `wiki/drafts/2026-04-06-rag-instead-grow-a-wiki.md`도 같은 관점으로 요약을 수정했다.
