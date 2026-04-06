@@ -19,11 +19,11 @@ tags:
 
 ## 소스 페이지
 
-- 준비 중
+- [sources/llm-wiki.md](sources/llm-wiki.md): LLM이 raw 문서 대신 지속적으로 유지되는 중간 위키를 관리한다는 패턴을 요약한다.
 
 ## 주제 페이지
 
-- 준비 중
+- [topics/llm-wiki-blogging.md](topics/llm-wiki-blogging.md): 블로그를 누적형 지식 시스템으로 운영하는 구조와 판단 기준을 정리한다.
 
 ## 시리즈 페이지
 
@@ -35,4 +35,4 @@ tags:
 
 ## 발행 후보 초안
 
-- 준비 중
+- [drafts/2026-04-06-rag-instead-grow-a-wiki.md](drafts/2026-04-06-rag-instead-grow-a-wiki.md): 위키형 블로그 운영법을 공개 글로 정리한 발행 초안이다.
