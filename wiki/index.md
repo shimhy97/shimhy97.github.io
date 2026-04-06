@@ -20,10 +20,12 @@ tags:
 ## 소스 페이지
 
 - [sources/llm-wiki.md](sources/llm-wiki.md): LLM이 raw 문서 대신 지속적으로 유지되는 중간 위키를 관리한다는 패턴을 요약한다.
+- [sources/open-trading-api.md](sources/open-trading-api.md): 한국투자증권 Open API 샘플 저장소가 자동매매 작업공간으로 확장된 구조를 요약한다.
 
 ## 주제 페이지
 
 - [topics/llm-wiki-blogging.md](topics/llm-wiki-blogging.md): 블로그를 누적형 지식 시스템으로 운영하는 구조와 판단 기준을 정리한다.
+- [topics/llm-friendly-trading-stack.md](topics/llm-friendly-trading-stack.md): API 예제, 전략 설계기, 백테스터, 실거래 봇, 위키를 잇는 자동매매 작업공간 관점을 정리한다.
 
 ## 시리즈 페이지
 
@@ -36,3 +38,4 @@ tags:
 ## 발행 후보 초안
 
 - [drafts/2026-04-06-rag-instead-grow-a-wiki.md](drafts/2026-04-06-rag-instead-grow-a-wiki.md): 위키형 블로그 운영법을 공개 글로 정리한 발행 초안이다.
+- [drafts/2026-04-06-open-trading-api-workbench.md](drafts/2026-04-06-open-trading-api-workbench.md): `open-trading-api`를 실시간 자동매매 운영 회고 중심의 블로그 글로 승격한 발행 초안이다.

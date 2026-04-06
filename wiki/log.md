@@ -35,3 +35,22 @@ tags:
 - 게시글 앞부분에 Andrej Karpathy의 `llm-wiki` gist가 어떤 문서인지와 핵심 제안을 먼저 소개했다.
 - 이후 문단에서 이 저장소의 `raw/`, `wiki/`, `_posts/`, `AGENTS.md` 구조로 어떻게 번역했는지 연결하도록 흐름을 다시 짰다.
 - `wiki/sources/llm-wiki.md`와 `wiki/drafts/2026-04-06-rag-instead-grow-a-wiki.md`도 같은 관점으로 요약을 수정했다.
+
+## [2026-04-06] ingest | open-trading-api
+
+- 외부 소스 저장소 `https://github.com/koreainvestment/open-trading-api`와 로컬 경로 `/Users/shimhy97/open-trading-api`를 기준으로 `README.md`, `strategy_builder/README.md`, `backtester/README.md`, `SPEC_v0.1.md`, `docs/implemented-trading-strategies.md`를 읽었다.
+- `wiki/sources/open-trading-api.md`에 저장소 구조와 핵심 계약을 요약했다.
+- `wiki/topics/llm-friendly-trading-stack.md`와 `wiki/drafts/2026-04-06-open-trading-api-workbench.md`를 추가해 블로그 발행 관점을 정리했다.
+- `wiki/overview.md`의 콘텐츠 축에 자동매매 시스템 설계와 운영을 보강했다.
+
+## [2026-04-06] publish | 샘플 코드 저장소를 자동매매 워크벤치로 키운 open-trading-api
+
+- `_posts/2026-04-06-open-trading-api-workbench.md`를 작성해 외부 레포 개발 내용을 구조와 계약 중심의 블로그 글로 승격했다.
+- 글 중간에 `examples_llm`, `strategy_builder`, `.kis.yaml`, `backtester`, `src`, `docs/kb` 관계를 보여 주는 mermaid chart를 넣었다.
+- 사이트에서 mermaid 코드 블록이 실제 다이어그램으로 렌더링되도록 `_includes/head/custom.html`을 추가했다.
+
+## [2026-04-06] revise | 운영 회고형 목차에 맞춰 open-trading-api 글 재작성
+
+- 게시글 제목을 `실시간 자동매매 봇 개발기: 전략보다 운영이 더 어려웠다`로 바꾸고, 구조 소개형 글을 운영 회고형 글로 다시 썼다.
+- 사용자 제안 목차에 맞춰 `왜 만들었는가`, `실시간 봇은 어떻게 돌아가는가`, `리스크 관리`, `장애와 대응`, `테스트와 검증`, `배운 점` 중심으로 흐름을 재구성했다.
+- 초안 작성용 서브에이전트 2개의 제안을 비교해, 공통으로 강조된 운영 안정성과 incident 기반 학습 포인트를 최종 원고에 반영했다.
