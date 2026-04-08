@@ -72,3 +72,9 @@ tags:
 - `_posts/2026-04-06-open-trading-api-workbench.md`를 처음부터 다시 써서, 전략 소개보다 시간축, 주문 차단, incident, Ralph와 위키 기반 구현 루프를 중심으로 재구성했다.
 - `strategy_builder`, `backtester`, `src`, `kb`, `scripts/ralph`가 함께 움직이는 작업공간 관점을 앞세우고, 실거래 3개 전략과 프리셋 10개 전략의 경계를 분명히 적었다.
 - `wiki/drafts/2026-04-06-open-trading-api-workbench.md`도 새 원고 구조에 맞게 중심 문장과 섹션 메모를 갱신했다.
+
+## [2026-04-08] revise | 약어와 개발 식별자 설명 규칙 추가
+
+- `docs/technical-post-writing-guide.md`에 약어, 클래스명, 전략 ID, 설정 키를 처음 등장할 때 풀어쓴 이름과 역할로 설명하는 규칙을 추가했다.
+- `_posts/2026-04-06-open-trading-api-workbench.md`에서 ORB, RVOL, ADX, VWAP, ATR, `sma_cross_5m`, `RiskEngine` 같은 표현의 첫 등장을 풀어 쓴 이름과 함께 정리했다.
+- `wiki/drafts/2026-04-06-open-trading-api-workbench.md`도 같은 기준을 반영해 초안 메모를 보강했다.
