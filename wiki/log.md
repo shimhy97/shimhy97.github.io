@@ -60,3 +60,9 @@ tags:
 - `docs/weekly-tech-roundup-writing-guide.md`를 삭제하고 `docs/technical-post-writing-guide.md`를 공개 기술 글의 단일 기준 문서로 남겼다.
 - 주간 다이제스트 관련 workflow와 운영 문서에서 삭제된 문서 참조를 걷어내고, 공통 기술 글 가이드만 가리키도록 정리했다.
 - `wiki/index.md`와 `wiki/overview.md`를 갱신해 위키에서도 단일 작성 기준을 바로 찾을 수 있게 했다.
+
+## [2026-04-08] revise | llm-wiki 글을 새 기술 글 형식으로 재작성
+
+- `_posts/2026-04-06-build-your-blog-as-an-llm-wiki.md`를 처음부터 다시 써서, `llm-wiki`의 철학과 이 저장소 적용 방식을 기사형 구조로 재구성했다.
+- 외부 원문 출처를 본문 각주와 `## 출처` 섹션으로 정리하고, `raw -> wiki -> _posts` 경계와 `AGENTS.md`의 schema 역할을 더 분명히 설명했다.
+- `wiki/drafts/2026-04-06-rag-instead-grow-a-wiki.md`도 새 원고 구조에 맞는 초안 메모로 갱신했다.
