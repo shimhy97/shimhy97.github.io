@@ -66,3 +66,9 @@ tags:
 - `_posts/2026-04-06-build-your-blog-as-an-llm-wiki.md`를 처음부터 다시 써서, `llm-wiki`의 철학과 이 저장소 적용 방식을 기사형 구조로 재구성했다.
 - 외부 원문 출처를 본문 각주와 `## 출처` 섹션으로 정리하고, `raw -> wiki -> _posts` 경계와 `AGENTS.md`의 schema 역할을 더 분명히 설명했다.
 - `wiki/drafts/2026-04-06-rag-instead-grow-a-wiki.md`도 새 원고 구조에 맞는 초안 메모로 갱신했다.
+
+## [2026-04-08] revise | open-trading-api 글을 운영 루프 중심으로 재작성
+
+- `_posts/2026-04-06-open-trading-api-workbench.md`를 처음부터 다시 써서, 전략 소개보다 시간축, 주문 차단, incident, Ralph와 위키 기반 구현 루프를 중심으로 재구성했다.
+- `strategy_builder`, `backtester`, `src`, `kb`, `scripts/ralph`가 함께 움직이는 작업공간 관점을 앞세우고, 실거래 3개 전략과 프리셋 10개 전략의 경계를 분명히 적었다.
+- `wiki/drafts/2026-04-06-open-trading-api-workbench.md`도 새 원고 구조에 맞게 중심 문장과 섹션 메모를 갱신했다.
