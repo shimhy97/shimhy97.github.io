@@ -75,7 +75,7 @@
 - 수치, 버전, 시점, 실패 조건 같은 구체 디테일을 우선한다.
 - 글 말미는 자동화 설명이 아니라 다음 확인 포인트로 닫는다.
 
-상세 규약은 `docs/weekly-tech-roundup-writing-guide.md`를 따른다.
+주간 다이제스트 글도 별도 전용 규약 없이 `docs/technical-post-writing-guide.md`를 공개 글 작성 기준으로 따른다.
 
 ## 초기 수집 대상
 
@@ -149,5 +149,5 @@ v1에서는 아래만 목표로 삼는다.
 3. 구현 작업 문서 `tasks.md`
 4. 소스 설정 파일 `data/weekly-tech/sources.yml`
 5. 수집 및 초안 생성 스크립트
-6. 공개 글 작성 규약 `docs/weekly-tech-roundup-writing-guide.md`
+6. 공개 글 작성 규약 `docs/technical-post-writing-guide.md`
 7. GitHub Actions workflow

@@ -85,6 +85,7 @@ LLM이 유지보수하는 지식 위키 계층입니다.
 상세 운영 규칙은 아래 문서를 기준으로 둡니다.
 
 - [운영 스키마](AGENTS.md)
+- [기술 글 작성 가이드](docs/technical-post-writing-guide.md)
 - [블로그 위키 workflow](docs/blog-wiki-workflow.md)
 - [철학 원문](docs/llm-wiki-ENG.md)
 
@@ -157,7 +158,8 @@ http://127.0.0.1:4000
 
 1. 새 자료를 `raw/inbox/` 또는 `raw/sources/`에 넣는다.
 2. `wiki/sources/`, `wiki/topics/`, `wiki/drafts/`를 먼저 갱신한다.
-3. 공개 가치가 확인된 내용만 `_posts/`로 옮긴다.
+3. 기술 글이라면 `docs/technical-post-writing-guide.md`의 양식으로 제목, 오프닝, 섹션 구조를 먼저 정한다.
+4. 공개 가치가 확인된 내용만 `_posts/`로 옮긴다.
 
 최종 공개 글 파일은 `_posts/` 아래에 아래 형식으로 추가합니다.
 

@@ -22,7 +22,7 @@
 
 - 위치: `_posts/`
 - 역할: 외부 독자에게 공개하는 최종 글을 담는다.
-- 특징: 위키에서 검토된 해석과 구조를 바탕으로 작성한다.
+- 특징: 위키에서 검토된 해석과 구조를 바탕으로 작성하며, 기술 글 양식은 `docs/technical-post-writing-guide.md`를 따른다.
 
 ## 운영 흐름
 
@@ -52,7 +52,7 @@
 ### 4. Publish
 
 1. `wiki/drafts/` 또는 `wiki/topics/`에서 공개 가치가 높은 초안을 고른다.
-2. 독자 관점에 맞춰 구조를 다듬는다.
+2. 독자 관점에 맞춰 구조를 다듬고, 기술 글이라면 `docs/technical-post-writing-guide.md`의 제목, 오프닝, 섹션, 마무리, 출처 규칙을 확인한다.
 3. 최종 글을 `_posts/`에 반영한다.
 4. 발행 후 관련 위키 페이지에 링크와 상태를 갱신한다.
 
@@ -75,5 +75,6 @@
 ## 관련 문서
 
 - 운영 스키마: `AGENTS.md`
+- 기술 글 작성 가이드: `docs/technical-post-writing-guide.md`
 - 철학 원문: `docs/llm-wiki-ENG.md`
 - 주간 다이제스트 workflow: `docs/weekly-tech-digest-workflow.md`

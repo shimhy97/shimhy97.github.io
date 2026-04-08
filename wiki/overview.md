@@ -2,7 +2,7 @@
 title: "블로그 위키 개요"
 type: overview
 status: active
-updated_at: 2026-04-06
+updated_at: 2026-04-08
 tags:
   - wiki
   - blog
@@ -34,6 +34,7 @@ tags:
 - 위키를 거치지 않은 일회성 답변은 가급적 줄인다.
 - 재사용 가치가 생긴 질문 답변은 `wiki/queries/`에 남긴다.
 - 공개 글은 `_posts/`에 두되, 근거와 연결점은 위키에 유지한다.
+- 공개 기술 글은 `docs/technical-post-writing-guide.md`를 단일 기준으로 삼아 사실 재구성과 섹션형 구조를 우선한다.
 
 ## 발행 판단 기준
 
