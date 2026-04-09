@@ -2,7 +2,7 @@
 title: "블로그 위키 로그"
 type: log
 status: active
-updated_at: 2026-04-08
+updated_at: 2026-04-09
 tags:
   - wiki
   - log
@@ -78,3 +78,15 @@ tags:
 - `docs/technical-post-writing-guide.md`에 약어, 클래스명, 전략 ID, 설정 키를 처음 등장할 때 풀어쓴 이름과 역할로 설명하는 규칙을 추가했다.
 - `_posts/2026-04-06-open-trading-api-workbench.md`에서 ORB, RVOL, ADX, VWAP, ATR, `sma_cross_5m`, `RiskEngine` 같은 표현의 첫 등장을 풀어 쓴 이름과 함께 정리했다.
 - `wiki/drafts/2026-04-06-open-trading-api-workbench.md`도 같은 기준을 반영해 초안 메모를 보강했다.
+
+## [2026-04-09] ingest | MeLU 논문
+
+- `docs/`에 있던 `MeLU` 논문 PDF를 `raw/sources/papers/2019-lee-melu-cold-start-recommendation.pdf`로 옮겨 원천 소스 계층에 고정했다.
+- `wiki/sources/melu-cold-start-recommendation.md`를 추가해 논문 요약, 서비스 관점 핵심 포인트, 후속 조사 지점을 정리했다.
+- `wiki/topics/few-shot-cold-start-recommendation.md`, `wiki/queries/2026-04-09-how-melu-serves-a-new-user.md`, `wiki/drafts/2026-04-09-melu-few-shot-cold-start-recommendation.md`를 만들어 질의응답과 발행 관점을 위키 자산으로 남겼다.
+
+## [2026-04-09] publish | MeLU를 다시 읽기: 콜드스타트 추천은 0-shot이 아니라 몇 개 반응 뒤에 시작돼요
+
+- `_posts/2026-04-09-melu-few-shot-cold-start-recommendation.md`를 작성해 MeLU를 0-shot 추천기가 아니라 few-shot 개인화 모델로 읽는 해설 글로 발행했다.
+- 글에서는 evidence candidate selection, 임베딩 고정과 head 적응, support/query 분리, local/global update 구분을 중심 설명 축으로 재구성했다.
+- `wiki/index.md`와 `wiki/log.md`를 갱신해 새 소스, 주제, 질의 기록, 발행 초안을 인덱스에 반영했다.
