@@ -108,3 +108,9 @@ tags:
 - 시스템 기본 Ruby 2.6에서는 `bundler 4.0.9` 설치가 맞지 않았지만, 레포의 `.ruby-version`을 따르는 `rbenv` Ruby 3.2.4 환경에는 `bundler 4.0.9`가 이미 준비돼 있음을 확인했다.
 - `rbenv exec bundle exec jekyll doctor`가 통과했고, `rbenv exec bundle exec jekyll build`도 성공했다.
 - 생성된 `_site/machine-learning/recommender-systems/melu-few-shot-cold-start-recommendation/index.html`에서 MathJax 스크립트와 수식 마크업이 함께 출력되는 것을 확인해 블로그 렌더링 경로를 검증했다.
+
+## [2026-04-10] revise | LaTeX 안전 사용 규칙을 단일 가이드와 위키에 명시
+
+- `docs/technical-post-writing-guide.md`에 MathJax 기준 블록 수식과 inline 수식 작성 규칙을 추가했다.
+- inline `$...$` 안의 첨자 `_`가 Kramdown과 충돌할 수 있으므로, 복잡한 inline 수식은 `<span markdown="0">\(...\)</span>` 패턴을 기본으로 쓰도록 명시했다.
+- `wiki/queries/2026-04-10-enable-latex-in-jekyll-blog.md`에도 같은 주의사항과 자주 깨지는 실수 예시를 남겨, 이후 LaTeX를 쓸 때 바로 참조할 수 있게 했다.
