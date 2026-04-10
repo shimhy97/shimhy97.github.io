@@ -5,7 +5,7 @@
 
 /*
  * 기본 테마는 유지하고, 기술 블로그에서 자주 보는 긴 코드 블록과
- * 요약 박스 가독성만 가볍게 보정한다.
+ * 요약 박스, 캡션, 긴 해설 글의 읽기 폭만 가볍게 보정한다.
  */
 .page__content pre {
   font-size: 0.92rem;
@@ -13,4 +13,45 @@
 
 .notice--primary {
   border-left: 4px solid #1f6feb;
+}
+
+.page__content .notice--primary,
+.page__content .notice--info,
+.page__content .notice--warning {
+  margin: 1.75rem 0;
+  border-radius: 12px;
+}
+
+.page__content .notice--primary > :last-child,
+.page__content .notice--info > :last-child,
+.page__content .notice--warning > :last-child {
+  margin-bottom: 0;
+}
+
+.page__content .figure-caption {
+  margin-top: -0.8rem;
+  margin-bottom: 1.8rem;
+  font-size: 0.93rem;
+  line-height: 1.65;
+  color: #5b6472;
+}
+
+.reading-post .page__content > :not(.sidebar__right) {
+  max-width: 46rem;
+  margin-inline: auto;
+}
+
+.reading-post .page__content > .notice--primary,
+.reading-post .page__content > .notice--info,
+.reading-post .page__content > .notice--warning,
+.reading-post .page__content > table,
+.reading-post .page__content > pre,
+.reading-post .page__content > div.highlighter-rouge,
+.reading-post .page__content > figure {
+  max-width: 52rem;
+}
+
+.reading-post .page__content > h2,
+.reading-post .page__content > h3 {
+  margin-top: 2.8rem;
 }

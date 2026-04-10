@@ -93,7 +93,7 @@
 
 ## 블로그 글 작성 규칙
 
-- `_posts/`와 `wiki/drafts/`의 기술 글은 `docs/technical-post-writing-guide.md`를 기본 양식으로 따른다.
+- `_posts/`와 `wiki/drafts/`의 기술 글은 `docs/technical-post-writing-guide.md`와 `docs/blog-engineering-guide.md`를 함께 따른다.
 - 기술 글은 단순 요약보다 사실의 재구성과 맥락 연결을 우선한다.
 - 기본 문체는 친근한 존댓말 `~요`체로 유지하되, 과장이나 홍보성 표현은 피한다.
 - 외부 소스를 직접 인용하는 글은 위 가이드의 본문 주석과 `## 출처` 형식을 따른다.

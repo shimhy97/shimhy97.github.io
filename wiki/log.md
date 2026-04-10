@@ -120,3 +120,9 @@ tags:
 - 외부 엔지니어링 블로그 사례를 읽고, 긴 글을 덜 빽빽하게 보이게 만드는 요약 박스, in-page navigation, figure, notice, 메타데이터 노출 패턴을 `wiki/queries/2026-04-10-tech-blog-layout-research.md`에 정리했다.
 - GitHub, Vercel, Cloudflare, Stripe, Thoughtworks / Martin Fowler, Atlassian, USWDS, Microsoft Design 자료를 함께 보며 글쓰기와 게시 UI가 분리되어 설계되는 관행을 메모했다.
 - 현재 레포의 `_config.yml` 기본값 `classes: wide`, `toc`, `toc_sticky`와 `assets/css/main.scss`의 `notice--primary` 상태도 같이 기록해, 바로 적용 가능한 개선 레버를 남겼다.
+
+## [2026-04-10] revise | 블로그 엔지니어링 규약 추가와 llm-wiki 글 재편집
+
+- `docs/blog-engineering-guide.md`를 추가해 요약 박스, 본문 폭, 시각적 멈춤점, figure caption, notice 사용 규칙을 이 저장소 기준으로 고정했다.
+- `AGENTS.md`와 `docs/technical-post-writing-guide.md`를 갱신해 글쓰기 규약과 게시 형식 규약을 함께 따르도록 정리했다.
+- `_posts/2026-04-06-build-your-blog-as-an-llm-wiki.md`를 새 규약에 맞춰 요약 박스, 비교 표, mermaid 다이어그램, 더 짧은 섹션 리듬을 갖는 글로 다시 썼다.
