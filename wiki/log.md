@@ -90,3 +90,15 @@ tags:
 - `_posts/2026-04-09-melu-few-shot-cold-start-recommendation.md`를 작성해 MeLU를 0-shot 추천기가 아니라 few-shot 개인화 모델로 읽는 해설 글로 발행했다.
 - 글에서는 evidence candidate selection, 임베딩 고정과 head 적응, support/query 분리, local/global update 구분을 중심 설명 축으로 재구성했다.
 - `wiki/index.md`와 `wiki/log.md`를 갱신해 새 소스, 주제, 질의 기록, 발행 초안을 인덱스에 반영했다.
+
+## [2026-04-10] revise | 블로그 전역 LaTeX 렌더링 설정 추가
+
+- `_includes/head/custom.html`에 MathJax 3 설정과 CDN 스크립트를 추가해 `$...$`, `$$...$$`, `\(...\)`, `\[...\]` 수식을 렌더링하도록 설정했다.
+- 코드 블록 안 수식 문자열이 잘못 처리되지 않도록 `skipHtmlTags`에 `pre`, `code`를 포함했다.
+- `wiki/queries/2026-04-10-enable-latex-in-jekyll-blog.md`에 설정 과정, 사용 규칙, 검증 상태를 남겼다.
+
+## [2026-04-10] revise | MeLU 논문 글을 실제 MathJax 문법으로 전환
+
+- `_posts/2026-04-09-melu-few-shot-cold-start-recommendation.md`의 핵심 수식 구간을 `text` 코드 블록 대신 실제 `$...$`, `$$...$$` 문법으로 바꿨다.
+- inline 수식과 display 수식을 함께 사용해 유저/아이템 임베딩, 예측식, local update 식이 글 안에서 자연스럽게 읽히도록 정리했다.
+- `support set`, `query set`, `local update`, `global update` 차이는 표와 수식 설명이 이어지도록 본문 흐름을 다듬었다.

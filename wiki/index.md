@@ -37,6 +37,7 @@ tags:
 ## 질의 기록
 
 - [queries/2026-04-09-how-melu-serves-a-new-user.md](queries/2026-04-09-how-melu-serves-a-new-user.md): MeLU가 새 유저에게 실제로 어떻게 추천하고 local/global update를 어디에 쓰는지 정리한다.
+- [queries/2026-04-10-enable-latex-in-jekyll-blog.md](queries/2026-04-10-enable-latex-in-jekyll-blog.md): 블로그 전역에 MathJax를 붙여 `$...$`, `$$...$$` 수식을 렌더링하는 설정 과정을 정리한다.
 
 ## 발행 후보 초안
 
