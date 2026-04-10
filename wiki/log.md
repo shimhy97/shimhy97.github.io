@@ -102,3 +102,9 @@ tags:
 - `_posts/2026-04-09-melu-few-shot-cold-start-recommendation.md`의 핵심 수식 구간을 `text` 코드 블록 대신 실제 `$...$`, `$$...$$` 문법으로 바꿨다.
 - inline 수식과 display 수식을 함께 사용해 유저/아이템 임베딩, 예측식, local update 식이 글 안에서 자연스럽게 읽히도록 정리했다.
 - `support set`, `query set`, `local update`, `global update` 차이는 표와 수식 설명이 이어지도록 본문 흐름을 다듬었다.
+
+## [2026-04-10] verify | rbenv Ruby 3.2.4로 MathJax 렌더링 빌드 확인
+
+- 시스템 기본 Ruby 2.6에서는 `bundler 4.0.9` 설치가 맞지 않았지만, 레포의 `.ruby-version`을 따르는 `rbenv` Ruby 3.2.4 환경에는 `bundler 4.0.9`가 이미 준비돼 있음을 확인했다.
+- `rbenv exec bundle exec jekyll doctor`가 통과했고, `rbenv exec bundle exec jekyll build`도 성공했다.
+- 생성된 `_site/machine-learning/recommender-systems/melu-few-shot-cold-start-recommendation/index.html`에서 MathJax 스크립트와 수식 마크업이 함께 출력되는 것을 확인해 블로그 렌더링 경로를 검증했다.

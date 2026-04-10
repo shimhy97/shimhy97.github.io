@@ -38,9 +38,9 @@ $$
 x_0 = [U_i; I_j], \qquad \hat{y}_{ij} = f_{\theta_1, \theta_2}(x_0)
 $$
 
-첫 줄과 둘째 줄은 "유저와 아이템을 벡터로 바꾼다"는 뜻이에요. $c_{i1}$, $c_{i2}$ 같은 값은 성별, 나이대, 직업처럼 각 속성을 나타내는 one-hot 벡터이고, $e_{i1}$, $e_{i2}$는 그걸 임베딩 벡터로 바꾸는 행렬입니다.<sup><a href="#src-1">[1]</a></sup> 여기서 세미콜론 `;`은 더하기가 아니라 이어붙이기예요. 즉 성별 임베딩 하나, 나이대 임베딩 하나, 직업 임베딩 하나를 길게 붙여서 유저 벡터 $U_i$를 만든다는 뜻입니다. 아이템 벡터 $I_j$도 같은 방식이고요. 그다음 $x_0 = [U_i; I_j]$는 "유저 $i$가 아이템 $j$를 만났을 때"의 입력 하나를 뜻합니다. $x_0$가 새 유저 자체가 아니라 유저-아이템 pair 입력이라는 점을 여기서 분리해 두면 뒤 문장이 훨씬 잘 읽혀요.
+첫 줄과 둘째 줄은 "유저와 아이템을 벡터로 바꾼다"는 뜻이에요. <span markdown="0">\(c_{i1}\)</span>, <span markdown="0">\(c_{i2}\)</span> 같은 값은 성별, 나이대, 직업처럼 각 속성을 나타내는 one-hot 벡터이고, <span markdown="0">\(e_{i1}\)</span>, <span markdown="0">\(e_{i2}\)</span>는 그걸 임베딩 벡터로 바꾸는 행렬입니다.<sup><a href="#src-1">[1]</a></sup> 여기서 세미콜론 `;`은 더하기가 아니라 이어붙이기예요. 즉 성별 임베딩 하나, 나이대 임베딩 하나, 직업 임베딩 하나를 길게 붙여서 유저 벡터 <span markdown="0">\(U_i\)</span>를 만든다는 뜻입니다. 아이템 벡터 <span markdown="0">\(I_j\)</span>도 같은 방식이고요. 그다음 <span markdown="0">\(x_0 = [U_i; I_j]\)</span>는 "유저 <span markdown="0">\(i\)</span>가 아이템 <span markdown="0">\(j\)</span>를 만났을 때"의 입력 하나를 뜻합니다. <span markdown="0">\(x_0\)</span>가 새 유저 자체가 아니라 유저-아이템 pair 입력이라는 점을 여기서 분리해 두면 뒤 문장이 훨씬 잘 읽혀요.
 
-그다음은 예측 단계입니다. $\hat{y}_{ij} = f_{\theta_1, \theta_2}(x_0)$는 지금 가진 모델 파라미터로 유저 $i$가 아이템 $j$를 얼마나 좋아할지 점수를 내는 식이에요.<sup><a href="#src-1">[1]</a></sup> 여기서 $\theta_1$은 임베딩 쪽 파라미터, $\theta_2$는 그 임베딩을 읽고 최종 점수를 내는 MLP head 쪽 파라미터로 이해하면 충분합니다. 아직은 "평균적인 유저에게 무난한 해석기"에 가깝고, support set을 보고 나서 이 해석기가 개인화됩니다.
+그다음은 예측 단계입니다. <span markdown="0">\(\hat{y}_{ij} = f_{\theta_1, \theta_2}(x_0)\)</span>는 지금 가진 모델 파라미터로 유저 <span markdown="0">\(i\)</span>가 아이템 <span markdown="0">\(j\)</span>를 얼마나 좋아할지 점수를 내는 식이에요.<sup><a href="#src-1">[1]</a></sup> 여기서 <span markdown="0">\(\theta_1\)</span>은 임베딩 쪽 파라미터, <span markdown="0">\(\theta_2\)</span>는 그 임베딩을 읽고 최종 점수를 내는 MLP head 쪽 파라미터로 이해하면 충분합니다. 아직은 "평균적인 유저에게 무난한 해석기"에 가깝고, support set을 보고 나서 이 해석기가 개인화됩니다.
 
 $$
 L_i = \frac{1}{|H_i|}\sum_{j \in H_i}(y_{ij} - \hat{y}_{ij})^2
@@ -50,7 +50,7 @@ $$
 \theta_{2,i} = \theta_2 - \alpha \nabla_{\theta_2} L_i\bigl(f_{\theta_1, \theta_2}\bigr)
 $$
 
-이 부분이 local update예요. $L_i$는 새 유저의 support set에서 실제 반응 $y_{ij}$와 예측값 $\hat{y}_{ij}$ 차이가 얼마나 큰지 계산한 오차입니다.<sup><a href="#src-1">[1]</a></sup> 그리고 $\nabla$는 gradient, 즉 "오차를 줄이려면 어느 방향으로 파라미터를 움직여야 하는가"를 알려 주는 기울기예요. 식 전체를 사람 말로 바꾸면 "새 유저가 이미 반응한 몇 개 아이템을 보고, 그 유저에게 맞게 MLP head를 한 걸음 수정한다"는 뜻입니다. 논문 method와 Figure 3도 local update에서 바뀌는 부분을 decision-making layers와 output layer, 즉 $W$와 $b$가 있는 파란 박스로 제한해 설명합니다.<sup><a href="#src-1">[1]</a></sup> 중요한 건 이때 임베딩까지 같이 흔들지 않고 $\theta_2$ 쪽만 고친다는 점이에요. 그래서 공통 좌표계는 유지하면서, 점수를 읽는 기준만 유저별로 잠깐 바꿀 수 있습니다.
+이 부분이 local update예요. <span markdown="0">\(L_i\)</span>는 새 유저의 support set에서 실제 반응 <span markdown="0">\(y_{ij}\)</span>와 예측값 <span markdown="0">\(\hat{y}_{ij}\)</span> 차이가 얼마나 큰지 계산한 오차입니다.<sup><a href="#src-1">[1]</a></sup> 그리고 <span markdown="0">\(\nabla\)</span>는 gradient, 즉 "오차를 줄이려면 어느 방향으로 파라미터를 움직여야 하는가"를 알려 주는 기울기예요. 식 전체를 사람 말로 바꾸면 "새 유저가 이미 반응한 몇 개 아이템을 보고, 그 유저에게 맞게 MLP head를 한 걸음 수정한다"는 뜻입니다. 논문 method와 Figure 3도 local update에서 바뀌는 부분을 decision-making layers와 output layer, 즉 <span markdown="0">\(W\)</span>와 <span markdown="0">\(b\)</span>가 있는 파란 박스로 제한해 설명합니다.<sup><a href="#src-1">[1]</a></sup> 중요한 건 이때 임베딩까지 같이 흔들지 않고 <span markdown="0">\(\theta_2\)</span> 쪽만 고친다는 점이에요. 그래서 공통 좌표계는 유지하면서, 점수를 읽는 기준만 유저별로 잠깐 바꿀 수 있습니다.
 
 ## 콜드스타트라는 말이 논문을 더 모호하게 만들어요
 
