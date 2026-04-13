@@ -1,0 +1,21 @@
+{
+  "database": "Zotero",
+  "noteImportFolder": "",
+  "pdfExportImageDPI": 120,
+  "pdfExportImageFormat": "jpg",
+  "pdfExportImageQuality": 90,
+  "citeFormats": [],
+  "exportFormats": [
+    {
+      "name": "Import paper to wiki",
+      "outputPathTemplate": "wiki/sources/@{{citekey}}.md",
+      "imageOutputPathTemplate": "raw/assets/{{citekey}}/",
+      "imageBaseNameTemplate": "image",
+      "templatePath": "wiki/_templates/zotero-paper-import.md",
+      "cslStyle": "APA 7th edition"
+    }
+  ],
+  "citeSuggestTemplate": "[[{{citekey}}]]",
+  "openNoteAfterImport": true,
+  "whichNotesToOpenAfterImport": "first-imported-note"
+}

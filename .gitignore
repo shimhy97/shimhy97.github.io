@@ -13,3 +13,5 @@ __pycache__
 *.pyc
 data/weekly-tech/output/*
 !data/weekly-tech/output/.gitkeep
+.obsidian/workspace.json
+.obsidian/workspaces.json

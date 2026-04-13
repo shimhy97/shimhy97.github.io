@@ -2,7 +2,7 @@
 title: "블로그 위키 로그"
 type: log
 status: active
-updated_at: 2026-04-10
+updated_at: 2026-04-13
 tags:
   - wiki
   - log
@@ -126,3 +126,9 @@ tags:
 - `docs/blog-engineering-guide.md`를 추가해 요약 박스, 본문 폭, 시각적 멈춤점, figure caption, notice 사용 규칙을 이 저장소 기준으로 고정했다.
 - `AGENTS.md`와 `docs/technical-post-writing-guide.md`를 갱신해 글쓰기 규약과 게시 형식 규약을 함께 따르도록 정리했다.
 - `_posts/2026-04-06-build-your-blog-as-an-llm-wiki.md`를 새 규약에 맞춰 요약 박스, 비교 표, mermaid 다이어그램, 더 짧은 섹션 리듬을 갖는 글로 다시 썼다.
+
+## [2026-04-13] query | Obsidian + Zotero 연구 워크플로 조사
+
+- Zotero와 Obsidian을 논문 읽기 워크플로에서 어떻게 나누어 쓰는지 공식 문서와 커뮤니티 사례를 바탕으로 `wiki/queries/2026-04-13-obsidian-zotero-research-workflow.md`에 정리했다.
+- Zotero Integration용 source note 템플릿 `wiki/_templates/zotero-paper-import.md`와 permanent note 템플릿 `wiki/_templates/obsidian-permanent-note.md`를 추가했다.
+- 이 repo를 Obsidian vault로 실험할 때 자주 바뀌는 `.obsidian/workspace*.json`이 git diff를 오염시키지 않도록 `.gitignore`를 보강했다.
