@@ -138,3 +138,9 @@ tags:
 - MeLU 논문 source note를 `wiki/sources/melu-cold-start-recommendation.md` 하나로 정리하고, Zotero import로 생긴 중복 note와 원문 PDF / PDF-to-Markdown dump를 레포에서 제거했다.
 - `AGENTS.md`, `wiki/`, `docs/`의 내부 문서 링크 규칙을 vault-root 기준 wikilink로 통일하고, `wiki/dashboard.md`를 추가해 Obsidian Dataview 대시보드를 기본 진입점으로 만들었다.
 - Zotero paper import 템플릿을 summary-first 구조로 다시 만들고, 로컬 원문 대신 DOI, Zotero 식별자, Zotero PDF URI로 논문을 추적하는 규칙을 문서와 설정에 반영했다.
+
+## [2026-04-14] revise | 새 논문 정리 절차를 Zotero ingest workflow로 문서화
+
+- `docs/zotero-paper-ingest-workflow.md`를 추가해, Zotero에 저장한 새 논문을 이 레포의 canonical source note로 정리하는 실제 순서를 단계별로 고정했다.
+- 새 문서에는 source note 정리 순서, topic/query/draft로 이어지는 기준, index/log 갱신 체크리스트, 하지 말아야 할 작업을 함께 정리했다.
+- `wiki/index.md`, `docs/blog-wiki-workflow.md`, `wiki/queries/2026-04-13-obsidian-zotero-research-workflow.md`에서 이 workflow 문서를 바로 찾을 수 있게 연결했다.

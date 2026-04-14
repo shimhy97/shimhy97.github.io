@@ -77,6 +77,7 @@
 ## 관련 문서
 
 - 운영 스키마: [[AGENTS]]
+- Zotero 논문 정리 절차: [[docs/zotero-paper-ingest-workflow]]
 - 기술 글 작성 가이드: [[docs/technical-post-writing-guide]]
 - 철학 원문: [[docs/llm-wiki-ENG]]
 - 주간 다이제스트 workflow: [[docs/weekly-tech-digest-workflow]]

@@ -17,6 +17,7 @@ tags:
 - [[wiki/dashboard|dashboard.md]]: Obsidian에서 source, query, draft 상태를 Dataview로 훑는 동적 진입점이다.
 - [[wiki/overview|overview.md]]: 블로그 위키의 범위, 독자, 콘텐츠 축, 발행 원칙을 요약한다.
 - [[wiki/log|log.md]]: ingest, query, lint, publish 이력을 시간순으로 기록한다.
+- [[docs/zotero-paper-ingest-workflow]]: Zotero에 저장한 새 논문을 이 레포의 canonical source note로 정리하는 실제 작업 순서다.
 - [[docs/technical-post-writing-guide]]: 공개 기술 글 작성의 단일 기준 문서다.
 - [[docs/blog-engineering-guide]]: 요약 박스, 본문 폭, figure, notice 같은 게시 형식 기준을 정리한다.
 

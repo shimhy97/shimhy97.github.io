@@ -142,6 +142,7 @@ tags:
 - [[wiki/_templates/zotero-paper-import]]: Zotero Integration import용 source note 템플릿
 - [[wiki/_templates/obsidian-permanent-note]]: source note에서 뽑아낼 permanent note 템플릿
 - [[wiki/dashboard]]: source, query, draft를 Dataview로 훑는 기본 대시보드
+- [[docs/zotero-paper-ingest-workflow]]: 새 논문 1편을 Zotero에서 canonical source note로 정리하는 실제 순서
 
 ## 블로그 글로의 확장 가능성
 
