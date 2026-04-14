@@ -40,6 +40,7 @@
 - `raw/inbox/`: 아직 분류하지 않은 신규 소스
 - `raw/sources/`: 장기 보관할 원천 자료
 - `raw/assets/`: 이미지, PDF 보조 파일, 캡처
+- 이 저장소에서는 논문 원문 PDF와 PDF-to-Markdown dump를 기본적으로 커밋하지 않는다. 논문은 DOI, URL, Zotero 메타데이터와 위키 source note로 추적한다.
 
 ### `wiki/`
 
@@ -56,6 +57,7 @@
 
 1. 새 자료를 `raw/inbox/`에 추가한다.
 2. 원문을 읽고 `wiki/sources/`에 소스 요약 페이지를 만든다.
+   - 논문처럼 원문을 별도 시스템(Zotero 등)에서 관리하는 경우, 로컬 파일 대신 DOI, URL, Zotero 식별자를 source note에 남긴다.
 3. 관련 `wiki/topics/`, `wiki/series/`, `wiki/drafts/`를 갱신한다.
 4. `wiki/index.md`와 `wiki/log.md`를 함께 갱신한다.
 
@@ -85,15 +87,16 @@
 ## 작성 규칙
 
 - 기본 언어는 한국어다.
-- 위키 문서는 가능한 한 상대 링크로 연결한다.
+- 내부 vault 문서는 가능한 한 vault-root 기준 wikilink로 연결한다. 예: `[[wiki/sources/melu-cold-start-recommendation]]`, `[[wiki/topics/few-shot-cold-start-recommendation]]`, `[[docs/technical-post-writing-guide]]`
+- 공개 블로그 글 `_posts/`와 외부 URL, Zotero URI는 기존 Markdown 링크를 유지한다.
 - 지속 가치가 있는 분석은 채팅에만 남기지 말고 파일로 남긴다.
-- 소스 요약에는 원문 경로 또는 URL을 반드시 기록한다.
+- 소스 요약에는 원문 URL을 반드시 기록하고, 로컬 원문을 저장하는 경우에만 `source_path`를 추가한다.
 - 위키 페이지에는 가능하면 YAML front matter를 두고 `title`, `type`, `status`, `updated_at`, `tags`를 명시한다.
 - `wiki/log.md`의 항목 헤더는 `## [YYYY-MM-DD] action | 제목` 형식을 유지한다.
 
 ## 블로그 글 작성 규칙
 
-- `_posts/`와 `wiki/drafts/`의 기술 글은 `docs/technical-post-writing-guide.md`와 `docs/blog-engineering-guide.md`를 함께 따른다.
+- `_posts/`와 `wiki/drafts/`의 기술 글은 `[[docs/technical-post-writing-guide]]`와 `[[docs/blog-engineering-guide]]`를 함께 따른다.
 - 기술 글은 단순 요약보다 사실의 재구성과 맥락 연결을 우선한다.
 - 기본 문체는 친근한 존댓말 `~요`체로 유지하되, 과장이나 홍보성 표현은 피한다.
 - 외부 소스를 직접 인용하는 글은 위 가이드의 본문 주석과 `## 출처` 형식을 따른다.

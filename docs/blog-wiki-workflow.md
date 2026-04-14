@@ -11,6 +11,7 @@
 - 위치: `raw/`
 - 역할: 사람이 수집한 원문을 장기 보관한다.
 - 특징: 원문은 사실상 불변이며, 요약이나 해석은 여기 넣지 않는다.
+- 논문 PDF처럼 별도 도구에서 관리하는 원문은 이 레포에 복제하지 않고, DOI/URL과 source note로만 추적할 수 있다.
 
 ### 2. LLM 위키
 
@@ -31,6 +32,7 @@
 1. 새 자료를 `raw/inbox/`에 넣는다.
 2. 보관 가치가 확인되면 `raw/sources/`로 정리한다.
 3. `wiki/sources/`에 요약 페이지를 만든다.
+   - 논문처럼 로컬 원문을 커밋하지 않는 경우에는 DOI, URL, Zotero 메타데이터를 남긴다.
 4. 관련 `wiki/topics/`, `wiki/series/`를 갱신한다.
 5. `wiki/index.md`와 `wiki/log.md`를 갱신한다.
 
@@ -74,7 +76,7 @@
 
 ## 관련 문서
 
-- 운영 스키마: `AGENTS.md`
-- 기술 글 작성 가이드: `docs/technical-post-writing-guide.md`
-- 철학 원문: `docs/llm-wiki-ENG.md`
-- 주간 다이제스트 workflow: `docs/weekly-tech-digest-workflow.md`
+- 운영 스키마: [[AGENTS]]
+- 기술 글 작성 가이드: [[docs/technical-post-writing-guide]]
+- 철학 원문: [[docs/llm-wiki-ENG]]
+- 주간 다이제스트 workflow: [[docs/weekly-tech-digest-workflow]]

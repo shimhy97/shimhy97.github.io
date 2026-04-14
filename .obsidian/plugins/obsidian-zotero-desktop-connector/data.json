@@ -8,14 +8,14 @@
   "exportFormats": [
     {
       "name": "Import paper to wiki",
-      "outputPathTemplate": "wiki/sources/@{{citekey}}.md",
+      "outputPathTemplate": "wiki/sources/{{title | lower | replace(':', '') | replace('?', '') | replace(',', '') | replace('.', '') | replace('(', '') | replace(')', '') | replace('/', ' ') | replace('&', ' and ') | replace(\"'\", '') | replace('’', '') | replace('  ', ' ') | trim | replace(' ', '-') | replace('--', '-') | replace('--', '-') }}.md",
       "imageOutputPathTemplate": "raw/assets/{{citekey}}/",
       "imageBaseNameTemplate": "image",
       "templatePath": "wiki/_templates/zotero-paper-import.md",
       "cslStyle": "APA 7th edition"
     }
   ],
-  "citeSuggestTemplate": "[[{{citekey}}]]",
+  "citeSuggestTemplate": "[[wiki/sources/{{title | lower | replace(':', '') | replace('?', '') | replace(',', '') | replace('.', '') | replace('(', '') | replace(')', '') | replace('/', ' ') | replace('&', ' and ') | replace(\"'\", '') | replace('’', '') | replace('  ', ' ') | trim | replace(' ', '-') | replace('--', '-') | replace('--', '-') }}]]",
   "openNoteAfterImport": true,
   "whichNotesToOpenAfterImport": "first-imported-note"
 }

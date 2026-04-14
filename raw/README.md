@@ -8,10 +8,10 @@
 - 새 자료는 먼저 `raw/inbox/`에 넣는다.
 - 장기 보관할 자료만 `raw/sources/`로 옮긴다.
 - 본문에서 참조할 이미지, 캡처, PDF 부속 파일은 `raw/assets/`에 둔다.
+- 별도 Zotero 라이브러리에서 관리하는 논문 PDF와 PDF-to-Markdown dump는 이 레포에 저장하지 않는다.
 
 ## 권장 사용 예시
 
 - 웹 클리퍼로 저장한 Markdown 기사
-- 논문 PDF
 - 세미나 노트 원문
 - 스크린샷과 차트 이미지

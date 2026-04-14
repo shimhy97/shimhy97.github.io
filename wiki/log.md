@@ -2,7 +2,7 @@
 title: "블로그 위키 로그"
 type: log
 status: active
-updated_at: 2026-04-13
+updated_at: 2026-04-14
 tags:
   - wiki
   - log
@@ -132,3 +132,9 @@ tags:
 - Zotero와 Obsidian을 논문 읽기 워크플로에서 어떻게 나누어 쓰는지 공식 문서와 커뮤니티 사례를 바탕으로 `wiki/queries/2026-04-13-obsidian-zotero-research-workflow.md`에 정리했다.
 - Zotero Integration용 source note 템플릿 `wiki/_templates/zotero-paper-import.md`와 permanent note 템플릿 `wiki/_templates/obsidian-permanent-note.md`를 추가했다.
 - 이 repo를 Obsidian vault로 실험할 때 자주 바뀌는 `.obsidian/workspace*.json`이 git diff를 오염시키지 않도록 `.gitignore`를 보강했다.
+
+## [2026-04-14] revise | Obsidian 논문 노트 구조와 Dataview 기본화
+
+- MeLU 논문 source note를 `wiki/sources/melu-cold-start-recommendation.md` 하나로 정리하고, Zotero import로 생긴 중복 note와 원문 PDF / PDF-to-Markdown dump를 레포에서 제거했다.
+- `AGENTS.md`, `wiki/`, `docs/`의 내부 문서 링크 규칙을 vault-root 기준 wikilink로 통일하고, `wiki/dashboard.md`를 추가해 Obsidian Dataview 대시보드를 기본 진입점으로 만들었다.
+- Zotero paper import 템플릿을 summary-first 구조로 다시 만들고, 로컬 원문 대신 DOI, Zotero 식별자, Zotero PDF URI로 논문을 추적하는 규칙을 문서와 설정에 반영했다.

@@ -37,8 +37,8 @@ tags:
 
 ## 연결할 위키 페이지
 
-- [LLM 위키형 블로그 운영](../topics/llm-wiki-blogging.md)
-- [RAG 대신 위키를 키우는 블로그 운영법](../drafts/2026-04-06-rag-instead-grow-a-wiki.md)
+- [[wiki/topics/llm-wiki-blogging|LLM 위키형 블로그 운영]]
+- [[wiki/drafts/2026-04-06-rag-instead-grow-a-wiki|RAG 대신 위키를 키우는 블로그 운영법]]
 
 ## 불확실성 및 후속 조사
 

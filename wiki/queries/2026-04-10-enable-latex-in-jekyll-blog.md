@@ -46,7 +46,7 @@ Jekyll 블로그에 MathJax를 붙여 `$...$`, `$$...$$` 수식을 렌더링하�
 - [../../_includes/head/custom.html](/Users/shimhy97/shimhy97-github.io/_includes/head/custom.html)
 - [../../_config.yml](/Users/shimhy97/shimhy97-github.io/_config.yml)
 - [../../_posts/2026-04-09-melu-few-shot-cold-start-recommendation.md](/Users/shimhy97/shimhy97-github.io/_posts/2026-04-09-melu-few-shot-cold-start-recommendation.md)
-- [../../docs/technical-post-writing-guide.md](/Users/shimhy97/shimhy97-github.io/docs/technical-post-writing-guide.md)
+- [[docs/technical-post-writing-guide]]
 
 ## 후속 액션
 

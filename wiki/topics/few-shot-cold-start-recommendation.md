@@ -27,12 +27,12 @@ tags:
 
 ## 근거 소스
 
-- [MeLU: Meta-Learned User Preference Estimator for Cold-Start Recommendation](../sources/melu-cold-start-recommendation.md)
+- [[wiki/sources/melu-cold-start-recommendation|MeLU: Meta-Learned User Preference Estimator for Cold-Start Recommendation]]
 
 ## 연결 페이지
 
-- [MeLU는 새 유저에게 어떻게 추천하나](../queries/2026-04-09-how-melu-serves-a-new-user.md)
-- [MeLU를 다시 읽기: 콜드스타트 추천은 몇 개 반응 뒤에 시작돼요](../drafts/2026-04-09-melu-few-shot-cold-start-recommendation.md)
+- [[wiki/queries/2026-04-09-how-melu-serves-a-new-user|MeLU는 새 유저에게 어떻게 추천하나]]
+- [[wiki/drafts/2026-04-09-melu-few-shot-cold-start-recommendation|MeLU를 다시 읽기: 콜드스타트 추천은 몇 개 반응 뒤에 시작돼요]]
 
 ## 열린 질문
 

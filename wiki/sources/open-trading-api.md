@@ -37,8 +37,8 @@ tags:
 
 ## 연결할 위키 페이지
 
-- [LLM 친화형 자동매매 작업공간](../topics/llm-friendly-trading-stack.md)
-- [샘플 코드 저장소를 자동매매 워크벤치로 키운 open-trading-api](../drafts/2026-04-06-open-trading-api-workbench.md)
+- [[wiki/topics/llm-friendly-trading-stack|LLM 친화형 자동매매 작업공간]]
+- [[wiki/drafts/2026-04-06-open-trading-api-workbench|샘플 코드 저장소를 자동매매 워크벤치로 키운 open-trading-api]]
 
 ## 불확실성 및 후속 조사
 

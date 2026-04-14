@@ -26,12 +26,12 @@ tags:
 
 ## 근거 소스
 
-- [LLM Wiki](../sources/llm-wiki.md)
+- [[wiki/sources/llm-wiki|LLM Wiki]]
 
 ## 연결 페이지
 
-- [블로그 위키 개요](../overview.md)
-- [RAG 대신 위키를 키우는 블로그 운영법](../drafts/2026-04-06-rag-instead-grow-a-wiki.md)
+- [[wiki/overview|블로그 위키 개요]]
+- [[wiki/drafts/2026-04-06-rag-instead-grow-a-wiki|RAG 대신 위키를 키우는 블로그 운영법]]
 
 ## 열린 질문
 

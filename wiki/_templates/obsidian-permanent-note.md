@@ -2,7 +2,7 @@
 title: "{{title}}"
 type: topic
 status: seed
-updated_at: {{date:YYYY-MM-DD}}
+updated_at: "{{date:YYYY-MM-DD}}"
 tags:
   - concept
 ---
@@ -17,7 +17,7 @@ tags:
 
 ## 근거 소스
 
-- [[...]]
+- [[wiki/sources/...]]
 
 ## 연결
 

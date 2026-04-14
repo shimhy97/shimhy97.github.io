@@ -3,7 +3,7 @@ title: "논문 연구용 Obsidian + Zotero 워크플로 조사"
 type: query
 status: filed
 created_at: 2026-04-13
-updated_at: 2026-04-13
+updated_at: 2026-04-14
 source_count: 10
 tags:
   - research
@@ -22,7 +22,8 @@ tags:
 - Zotero와 Obsidian은 대체재보다 역할 분담 조합에 가깝다. Zotero는 논문 수집, 메타데이터, PDF, 주석의 원본 시스템이고, Obsidian은 문헌 노트, 주제 노트, MOC, 그래프 탐색, 장기 합성에 강하다.
 - 외부 사례를 보면 "Zotero만으로 끝내는 사람"도 있지만, 논문 간 연결과 장기 지식 그래프를 만들려는 경우는 대체로 혼합형을 쓴다.
 - 내 상황에는 `Zotero = source of truth`, `Obsidian = thinking layer`, `이 블로그 repo = publish layer` 3단 분리가 가장 안전하다.
-- 즉 장기적으로는 별도 private research vault를 두는 편이 낫고, 지금 레포에는 Obsidian에서 재사용할 템플릿과 발행 연결 규칙을 두는 편이 맞다.
+- 이 레포를 Obsidian vault로 계속 열 수는 있지만, 논문 원문 PDF 자체는 커밋하지 않고 DOI, URL, Zotero 식별자와 source note로만 추적하는 편이 맞다.
+- 현재 레포는 `[[wiki/dashboard]]`와 Dataview를 기본 진입점으로 두고, Zotero import도 `@citekey` intake note 대신 사람용 slug source note를 바로 만드는 방향으로 정리하는 것이 자연스럽다.
 
 ## 외부 사례에서 보인 대표 패턴
 
@@ -108,14 +109,16 @@ tags:
 - 첨부 파일 폴더
   - 이 repo를 vault로 여는 경우 `raw/assets`
 - Zotero Integration import template
-  - `wiki/_templates/zotero-paper-import.md`
+  - `[[wiki/_templates/zotero-paper-import]]`
+- Dataview 기본 진입점
+  - `[[wiki/dashboard]]`
 
 ### Zotero Integration에서 권장할 출력 경로
 
 - 이 블로그 repo를 바로 실험용 vault로 쓸 때:
-  - `wiki/sources/@{{citekey}}.md`
+  - `wiki/sources/{{title-slug}}.md`
 - 별도 research vault를 만들 때:
-  - `01 Sources/@{{citekey}}.md`
+  - `01 Sources/{{title-slug}}.md`
 
 ## 추천 노트 흐름
 
@@ -130,13 +133,15 @@ tags:
 
 - 처음부터 플러그인을 많이 깔지 않는다.
 - PDF 전체를 Obsidian에 복제하는 흐름을 기본값으로 잡지 않는다.
+- 논문 원문 PDF를 이 블로그 repo에 커밋하는 흐름을 기본값으로 잡지 않는다.
 - 요약, 해석, 블로그 초안까지 source note 한 파일에 몰아넣지 않는다.
 - Zotero 메타데이터를 Obsidian에서 수동으로 덮어쓰기 시작하지 않는다.
 
 ## 이 저장소에 남겨 둔 템플릿
 
-- [`wiki/_templates/zotero-paper-import.md`](../_templates/zotero-paper-import.md): Zotero Integration import용 source note 템플릿
-- [`wiki/_templates/obsidian-permanent-note.md`](../_templates/obsidian-permanent-note.md): source note에서 뽑아낼 permanent note 템플릿
+- [[wiki/_templates/zotero-paper-import]]: Zotero Integration import용 source note 템플릿
+- [[wiki/_templates/obsidian-permanent-note]]: source note에서 뽑아낼 permanent note 템플릿
+- [[wiki/dashboard]]: source, query, draft를 Dataview로 훑는 기본 대시보드
 
 ## 블로그 글로의 확장 가능성
 

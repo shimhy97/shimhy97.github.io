@@ -27,12 +27,12 @@ tags:
 
 ## 근거 소스
 
-- [open-trading-api](../sources/open-trading-api.md)
+- [[wiki/sources/open-trading-api|open-trading-api]]
 
 ## 연결 페이지
 
-- [블로그 위키 개요](../overview.md)
-- [샘플 코드 저장소를 자동매매 워크벤치로 키운 open-trading-api](../drafts/2026-04-06-open-trading-api-workbench.md)
+- [[wiki/overview|블로그 위키 개요]]
+- [[wiki/drafts/2026-04-06-open-trading-api-workbench|샘플 코드 저장소를 자동매매 워크벤치로 키운 open-trading-api]]
 
 ## 열린 질문
 

@@ -51,8 +51,8 @@ tags:
 
 ## 근거 페이지
 
-- [open-trading-api](../sources/open-trading-api.md)
-- [LLM 친화형 자동매매 작업공간](../topics/llm-friendly-trading-stack.md)
+- [[wiki/sources/open-trading-api|open-trading-api]]
+- [[wiki/topics/llm-friendly-trading-stack|LLM 친화형 자동매매 작업공간]]
 
 ## 발행 결과
 

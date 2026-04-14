@@ -3,8 +3,8 @@ title: "{{source_title}}"
 type: source
 status: draft
 source_kind: article
-source_path: "raw/sources/..."
 source_url: ""
+# source_path: "raw/sources/..."
 ingested_at: YYYY-MM-DD
 updated_at: YYYY-MM-DD
 tags: []
@@ -26,7 +26,7 @@ tags: []
 
 ## 연결할 위키 페이지
 
--
+- [[wiki/topics/...]]
 
 ## 불확실성 및 후속 조사
 

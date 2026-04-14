@@ -19,11 +19,12 @@ tags: []
 
 ## 근거 소스
 
--
+- [[wiki/sources/...]]
 
 ## 연결 페이지
 
--
+- [[wiki/queries/...]]
+- [[wiki/drafts/...]]
 
 ## 열린 질문
 
