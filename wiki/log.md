@@ -2,7 +2,7 @@
 title: "블로그 위키 로그"
 type: log
 status: active
-updated_at: 2026-04-14
+updated_at: 2026-04-20
 tags:
   - wiki
   - log
@@ -144,3 +144,9 @@ tags:
 - `docs/zotero-paper-ingest-workflow.md`를 추가해, Zotero에 저장한 새 논문을 이 레포의 canonical source note로 정리하는 실제 순서를 단계별로 고정했다.
 - 새 문서에는 source note 정리 순서, topic/query/draft로 이어지는 기준, index/log 갱신 체크리스트, 하지 말아야 할 작업을 함께 정리했다.
 - `wiki/index.md`, `docs/blog-wiki-workflow.md`, `wiki/queries/2026-04-13-obsidian-zotero-research-workflow.md`에서 이 workflow 문서를 바로 찾을 수 있게 연결했다.
+
+## [2026-04-20] revise | open-trading-api 글을 배운 점 중심으로 재작성
+
+- `_posts/2026-04-06-open-trading-api-workbench.md`를 기존 운영 로직 설명에서 벗어나, 예제와 실거래, 설계와 검증, 신호와 주문, 기억과 기록의 경계를 배운 회고형 글로 다시 썼다.
+- `docs/technical-post-writing-guide.md`와 `docs/blog-engineering-guide.md` 기준에 맞춰 `reading-post`, 요약 박스, Mermaid 다이어그램, 비교 표, notice 박스를 추가했다.
+- `wiki/drafts/2026-04-06-open-trading-api-workbench.md`도 새 중심 문장과 섹션 구조에 맞춰 갱신했다.
