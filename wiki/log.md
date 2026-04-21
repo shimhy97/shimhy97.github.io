@@ -160,3 +160,9 @@ tags:
 
 - `_posts/2026-04-21-gnn-gcn-wired-communication-networks.md`를 작성해 통신망 GNN 서베이를 논문 요약, 유선망 활용, GCN 수식 이해 순서로 발행했다.
 - `docs/technical-post-writing-guide.md`와 `docs/blog-engineering-guide.md` 기준에 맞춰 요약 박스, Mermaid 다이어그램, 유선망 활용 표, notice 박스, 출처 섹션을 포함했다.
+
+## [2026-04-21] revise | GNN/GCN Q&A 추가 반영
+
+- `raw/assets/qna_GNN_GCN.md`에 추가된 GraphSAGE 선수학습, message passing, GCN 수식, `W` 차원 변환, 행/열 convention 질문을 `wiki/sources/@jiangGraphbasedDeepLearning2022.md`에 반영했다.
+- `_posts/2026-04-21-gnn-gcn-wired-communication-networks.md`를 처음부터 다시 써서 유선망 활용과 GNN/GCN 수식 학습 흐름이 함께 읽히도록 구조를 바꿨다.
+- `docs/technical-post-writing-guide.md`와 `docs/blog-engineering-guide.md` 기준에 맞춰 요약 박스, 표, Mermaid 다이어그램, 수식, notice 박스, 출처 섹션을 다시 정리했다.

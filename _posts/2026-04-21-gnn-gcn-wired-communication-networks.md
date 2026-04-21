@@ -1,11 +1,12 @@
 ---
-title: "통신망 GNN을 읽는 법: 유선 네트워크와 GCN 수식부터"
+title: "통신망 GNN을 읽는 법: GCN 수식은 이웃을 섞는 순서예요"
 date: 2026-04-21 13:20:00 +0900
 categories:
   - machine-learning
   - networking
 classes:
   - reading-post
+toc: true
 toc_label: "이 글의 구조"
 toc_icon: stream
 tags:
@@ -14,145 +15,276 @@ tags:
   - gcn
   - communication-networks
   - wired-networks
-excerpt: "Jiang의 통신망 GNN 서베이를 토폴로지 모델링, 유선 네트워크 활용, GCN 수식 이해 순서로 다시 정리한다."
+excerpt: "Jiang의 통신망 GNN 서베이를 유선 네트워크 활용, message passing, GCN 수식, W의 feature 변환 순서로 다시 읽는다."
 ---
 
-Weiwei Jiang의 `Graph-based Deep Learning for Communication Networks: A Survey`를 읽으면서 가장 먼저 잡아야 할 문장은 이것이었어요. 통신망에서 그래프 신경망 (Graph Neural Network, GNN)은 그냥 모델 이름 하나를 더 붙이는 일이 아니라, 라우터와 링크와 트래픽이 얽힌 구조를 입력의 중심에 다시 놓는 방식입니다.<sup><a href="#src-1">[1]</a></sup> 그래서 이 논문은 GNN 모델 목록보다 "통신망 문제를 어떤 그래프로 바꿀 수 있는가"를 보는 편이 더 잘 읽힙니다.
+Weiwei Jiang의 `Graph-based Deep Learning for Communication Networks: A Survey`를 처음 읽을 때는 "통신망에 GNN이 어디에 쓰였나"가 먼저 보였어요.<sup><a href="#src-1">[1]</a></sup> 그런데 질문을 계속 쌓다 보니, 더 중요한 갈림길은 모델 목록이 아니었습니다. 통신망을 그래프로 본다는 말이 실제 수식에서는 어떻게 <span markdown="0">\(\hat{A}H W\)</span> 같은 형태로 바뀌는지가 핵심이었어요.
 
-이번 글에서는 논문의 전체 요약을 먼저 잡고, 그다음 유선 네트워크에서 GNN이 어디에 쓰이는지 정리합니다. 마지막에는 제가 따로 Q&A로 정리했던 GNN 일반식과 그래프 합성곱 네트워크 (Graph Convolutional Network, GCN) 수식의 연결을 풀어보려 해요.
+그래서 이 글은 논문 요약만 하지 않습니다. 유선 네트워크에서 GNN이 어떤 운영 문제로 이어지는지 먼저 잡고, 그다음 제가 Q&A로 정리했던 그래프 신경망 (Graph Neural Network, GNN)과 그래프 합성곱 네트워크 (Graph Convolutional Network, GCN)의 수식을 초심자 순서로 다시 풀어봅니다. 마지막에는 왜 <span markdown="0">\(W\)</span>가 필요한지, 왜 <span markdown="0">\(HW\)</span>로 쓰는지, GraphSAGE로 넘어가기 전에 무엇을 가져가야 하는지도 같이 정리합니다.
 
 <div class="notice--primary" markdown="1">
 
 **이번 글에서 볼 것**
 
-- 논문의 핵심은 통신망의 topology, routing, traffic을 GNN 입력 구조로 되살리는 데 있어요.
-- 유선 네트워크에서는 network modeling, configuration, prediction, routing, security가 주요 활용 축으로 묶입니다.
-- GCN 수식은 어렵게 보면 행렬 곱이지만, 쉽게 보면 "이웃과 섞고, feature를 바꾸는" 메시지 패싱의 특수한 형태예요.
+- 통신망 GNN의 출발점은 "라우터, 링크, 트래픽, 경로를 그래프로 다시 읽기"입니다.
+- 유선망에서는 GNN 예측이 delay, routing, configuration, security 같은 운영 판단으로 이어져야 의미가 생깁니다.
+- GNN 일반식은 `message -> aggregate -> update`이고, GCN은 그 흐름을 정규화 adjacency와 weight matrix로 줄인 표기입니다.
+- <span markdown="0">\(W\)</span>는 차원을 무조건 키우는 장치가 아니라, 이웃 정보를 문제에 맞는 feature 의미로 다시 조합하는 학습 파라미터입니다.
 
 </div>
 
-## 0. 논문은 통신망을 그래프로 다시 읽습니다
+## 0. 논문은 토폴로지를 입력으로 되살립니다
 
-이 서베이는 2016년부터 2021년까지의 관련 연구 81편을 무선 네트워크, 유선 네트워크, 소프트웨어 정의 네트워킹 (Software Defined Networking, SDN) 세 시나리오로 나눠 정리합니다.<sup><a href="#src-1">[1]</a></sup> 논문이 보는 통신망의 문제는 routing, load balancing, traffic prediction, resource allocation, virtual network embedding처럼 오래된 문제와 새 문제가 섞여 있습니다. 기존 딥러닝 모델도 이런 문제에 쓰였지만, 많은 모델은 이미지나 시계열처럼 유클리드 구조의 데이터에 더 자연스럽게 맞춰져 있었어요.<sup><a href="#src-1">[1]</a></sup>
+이 서베이는 2016년부터 2021년까지의 graph-based deep learning 연구 81편을 무선 네트워크, 유선 네트워크, 소프트웨어 정의 네트워킹 (Software Defined Networking, SDN) 세 축으로 나눠 정리합니다.<sup><a href="#src-1">[1]</a></sup> 논문이 다루는 문제는 channel allocation, power control, routing, traffic prediction, virtual network embedding, intrusion detection처럼 넓습니다. 하지만 이 넓은 목록을 관통하는 질문은 하나예요. "네트워크 문제에서 구조 자체를 어떻게 모델 입력으로 넣을 것인가?"
 
-GNN이 들어오는 이유는 여기에 있습니다. 통신망은 처음부터 그래프에 가깝습니다. 유선 backbone에서는 node가 router이고, edge가 physical transmission link입니다. node feature에는 in-flow와 out-flow traffic이 들어갈 수 있고, edge feature에는 bandwidth나 delay 같은 transmission metric이 들어갈 수 있어요.<sup><a href="#src-1">[1]</a></sup> 즉 모델이 배워야 하는 것은 노드 하나의 값만이 아니라, 노드와 링크와 경로가 함께 만드는 관계입니다.
+기존 딥러닝은 이미지처럼 격자 구조가 있거나, 시계열처럼 순서가 분명한 데이터에 잘 맞았습니다. 반면 통신망은 라우터와 링크, 송수신 페어와 간섭, 플로우와 경로가 얽힌 비유클리드 구조입니다. 논문은 이 지점에서 GNN이 자연스럽다고 봅니다. 유선 backbone에서는 node가 router이고 edge가 physical transmission link입니다. node feature에는 in-flow와 out-flow traffic이 들어갈 수 있고, edge feature에는 bandwidth나 delay 같은 transmission metric이 들어갈 수 있어요.<sup><a href="#src-1">[1]</a></sup>
 
 ```mermaid
 flowchart LR
-  A["라우터와 링크<br/>physical topology"] --> B["그래프 표현<br/>node · edge · feature"]
-  B --> C["GNN/GCN/MPNN<br/>이웃 정보 집계"]
-  C --> D["delay · traffic · routing<br/>예측과 운영 판단"]
+  A["통신망 관찰<br/>router · link · traffic"] --> B["그래프 정의<br/>node · edge · feature"]
+  B --> C["GNN 계열 모델<br/>GCN · GAT · MPNN · GraphSAGE"]
+  C --> D["운영 지표 예측<br/>delay · loss · traffic · FCT"]
+  D --> E["운영 판단<br/>routing · load balancing · configuration"]
 ```
 
-<p class="figure-caption">이 논문을 읽을 때 중요한 흐름은 통신망을 표나 시계열로만 보지 않고, topology를 가진 그래프로 바꾼 뒤 예측과 최적화로 연결하는 점이에요.</p>
+<p class="figure-caption">이 글에서 중요한 흐름은 통신망을 표나 시계열로만 펴지 않고, topology를 가진 그래프로 만든 뒤 운영 판단으로 연결하는 점이에요.</p>
 
-논문은 GNN을 만능 도구처럼 쓰지는 않습니다. 공개 학습 데이터가 부족하고, 깊은 GCN에서는 over-smoothing 문제가 생기며, link failure나 congestion 같은 perturbation 상황에서 안정성을 따로 봐야 한다고 지적합니다.<sup><a href="#src-1">[1]</a></sup> 그래서 이 글에서도 "GNN을 쓰면 된다"보다 "어떤 네트워크 문제를 어떤 그래프로 만들 수 있나"에 초점을 두는 편이 맞습니다.
+여기서 "그래프로 만든다"는 말은 생각보다 구체적입니다. 무엇을 node로 볼지, 어떤 관계를 edge로 둘지, node feature와 edge feature에 무엇을 넣을지를 먼저 정해야 합니다. 이 결정을 흐리면 GNN 모델 이름을 바꿔도 문제 정의가 선명해지지 않습니다. GraphSAGE를 공부하기 전에도 결국 같은 질문으로 돌아옵니다. "내 문제의 node feature는 무엇이고, edge는 어떤 기준으로 만들 것인가?"
 
-## 1. 유선망에서는 예측이 운영으로 이어집니다
+## 1. 유선망에서는 예측이 운영으로 넘어갑니다
 
-유선 네트워크 섹션에서 논문은 computer network를 중심으로 network modeling, network configuration, network prediction, network management, network security를 나눠 설명합니다.<sup><a href="#src-1">[1]</a></sup> 여기에 blockchain platform, data center network, optical network 같은 특수한 유선망 사례가 이어져요. 읽으면서 저는 이 섹션을 "예측 모델을 만든다"보다 "예측을 운영 판단으로 넘긴다"는 흐름으로 보는 편이 더 자연스러웠습니다.
+유선 네트워크 섹션은 이 논문에서 특히 실무 감각이 잘 드러나는 부분입니다. 논문은 computer network를 중심으로 network modeling, network configuration, network prediction, network management, network security를 나누고, 이어서 blockchain platform, data center network, optical network 같은 특수한 유선망 사례를 설명합니다.<sup><a href="#src-1">[1]</a></sup>
 
-| 활용 축 | 입력으로 보는 것 | GNN이 돕는 판단 |
+제가 이 섹션을 다시 읽으며 잡은 기준은 "예측 자체가 목표인가, 예측이 운영 행동으로 이어지는가"였습니다. 유선망에서 GNN이 쓸모 있으려면 delay나 traffic을 맞히는 데서 끝나지 않고 routing, load balancing, configuration validation, alert correlation 같은 판단으로 넘어가야 합니다.
+
+| 활용 축 | 그래프로 보는 입력 | 모델이 돕는 판단 |
 | --- | --- | --- |
 | Network modeling | topology, routing scheme, traffic matrix | delay, jitter, loss, throughput 같은 end-to-end metric 추정 |
-| Configuration | 부분 설정과 네트워크 구조 | BGP configuration synthesis, MPLS property analysis, feasibility 판단 |
-| Prediction | traffic history와 그래프 구조 | delay prediction, origin-destination traffic prediction, backbone traffic prediction |
-| Management | 예측된 네트워크 상태 | routing optimization, load balancing, traffic engineering |
-| Security | botnet connection, intrusion alert graph | botnet pattern detection, alert correlation |
+| Configuration | 부분 설정, routing policy, network property | BGP configuration synthesis, MPLS property analysis, feasibility 판단 |
+| Prediction | traffic history, origin-destination relation, graph structure | backbone traffic prediction, delay prediction, demand 변화 감지 |
+| Management | 예측된 링크/경로 상태 | routing optimization, load balancing, traffic engineering |
+| Security | botnet connection, alert graph, intrusion pattern | botnet detection, intrusion detection, alert correlation |
+| Data center / optical | dynamic topology, flow, lightpath relation | Flow Completion Time (FCT) 예측, unseen topology routing |
 
-Network modeling은 가장 기본 축입니다. 논문은 topology, routing scheme, traffic matrix를 입력으로 두고 end-to-end metric을 추정하는 연구들을 묶습니다.<sup><a href="#src-1">[1]</a></sup> 여기서 중요한 점은 "그래프를 예쁘게 embedding한다"가 아니라, 운영자가 아직 보지 못한 topology나 traffic 조합에 대해 delay, jitter, loss 같은 값을 추정하려 한다는 데 있어요.
+Network modeling은 topology, routing scheme, traffic matrix를 함께 넣고 end-to-end metric을 추정하려는 축입니다.<sup><a href="#src-1">[1]</a></sup> 이때 GNN은 단순 분류기라기보다 네트워크 simulator에 가까운 역할을 맡습니다. 아직 보지 못한 topology나 traffic 조합에서 delay, jitter, loss가 어떻게 나올지 추정하려는 거죠.
 
-Prediction 축도 비슷합니다. 예를 들어 SGCRN은 그래프 합성곱과 GRU를 결합해 실제 IP backbone traffic data에서 traffic prediction을 다룹니다.<sup><a href="#src-1">[1]</a></sup> MSTNN은 origin-destination traffic prediction을 다루고, DCRNN에서 영감을 받은 모델도 network traffic prediction에 쓰입니다.<sup><a href="#src-1">[1]</a></sup> 결국 GNN은 topology 방향의 공간 의존성을 잡고, GRU나 recurrent 구조는 시간 방향 변화를 잡는 식으로 역할이 나뉩니다.
+Traffic prediction 쪽에서는 공간 의존성과 시간 의존성이 같이 나옵니다. 예를 들어 논문은 graph convolution과 GRU를 결합해 실제 IP backbone traffic data를 예측하는 흐름을 소개합니다.<sup><a href="#src-1">[1]</a></sup> graph convolution은 "어느 라우터와 어느 링크가 연결되어 있는가"를 보고, GRU 같은 recurrent 구조는 "시간에 따라 traffic이 어떻게 바뀌는가"를 봅니다.
 
 <div class="notice--info" markdown="1">
 
-**유선망에서 눈에 남는 번역**
+**유선망 섹션을 읽는 기준**
 
-- GNN은 "라우터를 node로, 링크를 edge로 둔 뒤 traffic과 delay를 feature로 넣는 모델"로 출발합니다.
-- 이 모델이 쓸모 있으려면 예측에서 끝나지 않고 routing, load balancing, configuration change 같은 운영 판단으로 이어져야 합니다.
+- GNN이 무엇을 node로 삼는지 먼저 봅니다.
+- 예측 대상이 delay인지, traffic인지, routing cost인지 구분합니다.
+- 그 예측이 configuration, routing, security 판단으로 어떻게 넘어가는지 확인합니다.
 
 </div>
 
-Data center network와 optical network는 이 관점을 더 분명하게 보여 줍니다. 데이터센터에서는 topology가 바뀌어도 Flow Completion Time (FCT)을 예측하고, 그 결과를 flow routing, flow scheduling, topology management에 쓰려는 연구가 소개됩니다.<sup><a href="#src-1">[1]</a></sup> Optical Transport Network (OTN)에서는 GNN의 일반화 능력과 deep reinforcement learning을 결합해 unseen topology에서 routing을 최적화하는 흐름도 나옵니다.<sup><a href="#src-1">[1]</a></sup>
+Data center network 사례는 이 연결을 더 분명하게 보여 줍니다. topology가 바뀌어도 FCT를 예측하고, 그 예측을 flow routing, flow scheduling, topology management에 쓰려는 흐름이 나옵니다.<sup><a href="#src-1">[1]</a></sup> Optical Transport Network (OTN)에서는 unseen topology에서 routing을 다루기 위해 GNN의 일반화 능력과 deep reinforcement learning을 결합하는 방향도 소개됩니다.<sup><a href="#src-1">[1]</a></sup>
 
-그래서 유선망에서 GNN을 읽을 때는 모델 이름보다 질문을 먼저 적는 편이 좋습니다. "이 그래프에서 node와 edge는 무엇인가", "예측하려는 값은 delay인가 traffic인가 routing cost인가", "그 예측이 어떤 운영 행동으로 이어지는가"를 보면 각 연구의 위치가 잡힙니다.
+그래서 이 논문을 유선망 관점으로 읽을 때 모델 이름을 먼저 외우는 것은 효율이 낮았습니다. 더 좋은 질문은 이것이었어요. "이 연구는 topology, traffic, routing 중 무엇을 함께 읽고, 그 결과를 어떤 운영 판단에 넘기는가?"
 
-## 2. GNN에서 GCN으로 가는 길은 메시지 함수를 고르는 일입니다
+## 2. GNN 수식은 메시지를 모으는 문장입니다
 
-제가 따로 정리한 Q&A에서 가장 크게 막혔던 지점은 "GNN의 한 종류가 GCN이라면, 일반식이 어떻게 GCN 식으로 이어지나"였어요. 논문은 Message Passing Neural Network (MPNN)를 소개하면서 메시지 패싱을 아래처럼 씁니다.<sup><a href="#src-1">[1]</a></sup>
+Q&A에서 가장 오래 붙잡은 부분은 GNN 일반식이었습니다. 처음 보면 기호가 많아서 어려워 보이지만, 사실 한 문장으로 줄일 수 있어요. 노드는 이웃에게서 메시지를 받고, 그 메시지를 모아 자기 표현을 새로 만듭니다.
+
+논문은 공간 기반 GNN을 설명하면서 Message Passing Neural Network (MPNN) 관점의 식을 소개합니다.<sup><a href="#src-1">[1]</a></sup>
 
 $$
-m_i^{(t)}=\sum_{j\in N(i)} M^{(t)}(X_i^{(t-1)},X_j^{(t-1)},e_{ij})
+m_i^{(t)}=\sum_{j\in N(i)}M^{(t)}(X_i^{(t-1)},X_j^{(t-1)},e_{ij})
 $$
 
 $$
 X_i^{(t)}=U^{(t)}(X_i^{(t-1)},m_i^{(t)})
 $$
 
-첫 번째 식은 이웃에게서 메시지를 모으는 단계이고, 두 번째 식은 그 메시지로 내 상태를 업데이트하는 단계입니다. GCN은 이 일반 틀에서 메시지 함수와 업데이트 함수를 비교적 단순하게 고른 경우로 볼 수 있어요. 이웃 node의 feature를 가져오고, adjacency로 이웃을 모은 뒤, learnable weight와 activation을 통과시키는 식입니다.
+첫 번째 식은 이웃이 보내는 메시지를 모으는 단계입니다. <span markdown="0">\(i\)</span>는 지금 업데이트하려는 중심 노드이고, <span markdown="0">\(N(i)\)</span>는 그 노드의 이웃 집합입니다. <span markdown="0">\(X_i^{(t-1)}\)</span>는 중심 노드의 이전 표현, <span markdown="0">\(X_j^{(t-1)}\)</span>는 이웃 노드의 이전 표현입니다. <span markdown="0">\(e_{ij}\)</span>는 두 노드 사이의 edge feature인데, 통신망에서는 링크 대역폭, 지연, 거리, 연결 종류 같은 값이 들어갈 수 있습니다.
 
-GCN에서는 보통 self-loop를 넣습니다. 자기 자신도 이웃 집계에 포함하기 위해 adjacency에 identity matrix를 더하는 거예요.
+두 번째 식은 업데이트 단계입니다. 이웃에게서 모은 메시지 <span markdown="0">\(m_i^{(t)}\)</span>와 내 이전 표현을 합쳐 새 표현 <span markdown="0">\(X_i^{(t)}\)</span>를 만듭니다. 여기서 <span markdown="0">\(t\)</span>는 꼭 실제 시간이 아닙니다. 일반적인 GNN 설명에서는 layer, propagation step, iteration으로 읽는 편이 자연스럽습니다. 한 번 업데이트하면 1-hop 이웃 정보가 들어오고, 두 번 업데이트하면 이웃의 이웃까지 간접적으로 들어오는 식이에요.
+
+작은 예시로 보면 더 쉽습니다. 그래프가 `1 - 2 - 3`이고, 지금 2번 노드를 업데이트한다고 해봅시다.
+
+| 항목 | 값 |
+| --- | --- |
+| 중심 노드 | <span markdown="0">\(i=2\)</span> |
+| 이웃 집합 | <span markdown="0">\(N(2)=\{1,3\}\)</span> |
+| 이전 표현 | <span markdown="0">\(X_1=10, X_2=20, X_3=30\)</span> |
+| 메시지 함수 | <span markdown="0">\(M(X_i,X_j)=X_j\)</span> |
+| 업데이트 함수 | <span markdown="0">\(U(X_i,m_i)=X_i+\frac{1}{2}m_i\)</span> |
+
+이때 1번 노드는 2번에게 10을 보내고, 3번 노드는 2번에게 30을 보냅니다. 메시지를 합치면 <span markdown="0">\(m_2=40\)</span>입니다. 업데이트 함수에 넣으면 새 표현은 아래처럼 됩니다.
+
+$$
+X_2^{(t)}=20+\frac{1}{2}\cdot 40=40
+$$
+
+이 장난감 예시는 실제 모델이 아니라 수식을 읽기 위한 번역입니다. 그래도 핵심은 충분히 보여 줍니다. GNN은 이웃 수가 노드마다 달라도 쓸 수 있어야 하고, 이웃 순서가 바뀌어도 결과가 흔들리지 않아야 합니다. 그래서 sum, mean, max처럼 순서에 둔감한 aggregation이 자주 등장합니다.
+
+## 3. GCN은 그 문장을 행렬곱으로 줄입니다
+
+GCN은 GNN의 한 종류입니다. 더 정확히 말하면, 방금 본 message passing의 여러 선택지를 상당히 단순하게 고른 모델입니다. 메시지는 이웃 feature 자체로 두고, aggregation은 adjacency matrix를 이용한 가중합으로 두며, update는 선형변환과 활성화로 둡니다.
+
+먼저 그래프를 인접행렬 (adjacency matrix) <span markdown="0">\(A\)</span>로 둡니다. <span markdown="0">\(A_{ij}=1\)</span>이면 노드 <span markdown="0">\(i\)</span>와 <span markdown="0">\(j\)</span>가 연결되어 있고, 0이면 연결되어 있지 않다는 뜻입니다. 노드 feature를 모두 모은 행렬을 <span markdown="0">\(H\in\mathbb{R}^{N\times d}\)</span>라고 하면, <span markdown="0">\(AH\)</span>는 각 노드가 이웃 feature를 모은 결과가 됩니다.
+
+예를 들어 다시 `1 - 2 - 3` 그래프를 보겠습니다.
+
+$$
+A=
+\begin{bmatrix}
+0&1&0\\
+1&0&1\\
+0&1&0
+\end{bmatrix},
+\quad
+H=
+\begin{bmatrix}
+1\\
+2\\
+3
+\end{bmatrix}
+$$
+
+그러면 <span markdown="0">\(AH\)</span>는 아래처럼 됩니다.
+
+$$
+AH=
+\begin{bmatrix}
+2\\
+1+3\\
+2
+\end{bmatrix}
+=
+\begin{bmatrix}
+2\\
+4\\
+2
+\end{bmatrix}
+$$
+
+1번 노드는 이웃 2번의 값 2를 받고, 2번 노드는 이웃 1번과 3번의 값인 1과 3을 합쳐 4를 받습니다. 즉 adjacency matrix 곱셈은 "연결된 이웃의 feature를 모으는 연산"으로 읽을 수 있습니다.
+
+그런데 <span markdown="0">\(A\)</span>만 쓰면 자기 자신의 feature가 빠집니다. 그래서 GCN은 보통 self-loop를 추가합니다.
 
 $$
 \tilde{A}=A+I_N
 $$
 
-그다음 degree normalization으로 이웃이 많은 node의 값이 단순 합 때문에 커지는 문제를 줄입니다.
+이제 자기 자신도 이웃 집계에 들어갑니다. 하지만 그냥 더하기만 하면 이웃이 많은 node의 값이 커지는 문제가 생깁니다. 그래서 degree matrix <span markdown="0">\(\tilde{D}\)</span>를 이용해 정규화합니다.
 
 $$
 \hat{A}=\tilde{D}^{-1/2}\tilde{A}\tilde{D}^{-1/2}
 $$
 
-이제 node feature를 행으로 쌓은 <span markdown="0">\(H^{(l)}\)</span>를 쓰면 GCN은 흔히 아래처럼 읽을 수 있습니다.
+이렇게 만든 <span markdown="0">\(\hat{A}\)</span>를 쓰면 GCN의 대표 식이 나옵니다.
 
 $$
 H^{(l+1)}=\sigma(\hat{A}H^{(l)}W^{(l)})
 $$
 
-이 식을 한 문장으로 줄이면 "이웃과 섞고, feature를 바꾼다"입니다. <span markdown="0">\(\hat{A}H^{(l)}\)</span>가 graph topology를 따라 이웃 feature를 aggregation하는 부분이고, <span markdown="0">\(W^{(l)}\)</span>가 feature 차원을 바꾸는 선형변환입니다. 여기에 <span markdown="0">\(\sigma\)</span>가 비선형성을 더합니다.
+이 식을 너무 어렵게 볼 필요는 없습니다. <span markdown="0">\(\hat{A}H^{(l)}\)</span>는 "정규화된 자기 자신 + 이웃 feature 섞기"이고, <span markdown="0">\(W^{(l)}\)</span>는 "섞인 feature를 새 표현 공간으로 바꾸기"입니다. <span markdown="0">\(\sigma\)</span>는 ReLU 같은 활성화 함수입니다.
 
-## 3. W가 뒤에 있는 이유는 행렬의 방향 때문입니다
+```mermaid
+flowchart LR
+  A["H^(l)<br/>현재 노드 feature"] --> B["Ahat H^(l)<br/>자기 자신 + 이웃 집계"]
+  B --> C["Ahat H^(l) W^(l)<br/>feature 변환"]
+  C --> D["sigma(.)<br/>비선형성"]
+  D --> E["H^(l+1)<br/>새 노드 표현"]
+```
 
-두 번째로 헷갈렸던 질문은 "선형변환이면 <span markdown="0">\(Wx\)</span> 아닌가, 왜 GCN 식에서는 <span markdown="0">\(HW\)</span>인가"였습니다. 결론은 convention 차이예요. 선형대수 교재에서는 feature vector를 열벡터로 두는 경우가 많아서 <span markdown="0">\(Wx\)</span>가 자연스럽습니다. 하지만 GCN 구현과 논문 설명에서는 전체 node feature를 행렬로 쌓고, 한 행을 한 node의 feature로 보는 표기가 자주 나옵니다.
+<p class="figure-caption">GCN 식은 message passing을 행렬곱으로 압축한 표기입니다. 먼저 node 축에서 이웃을 섞고, 그다음 feature 축에서 표현을 바꿉니다.</p>
+
+여기까지 오면 "GCN에도 aggregation이 들어가나?"라는 질문에는 분명히 답할 수 있습니다. 들어갑니다. 오히려 GCN의 핵심이 aggregation입니다. 다만 이 aggregation을 <span markdown="0">\(\hat{A}H\)</span>라는 행렬곱으로 깔끔하게 쓴 것뿐이에요.
+
+## 4. W는 차원보다 의미를 바꿉니다
+
+두 번째로 많이 헷갈렸던 지점은 <span markdown="0">\(W\)</span>였습니다. "이웃을 섞는 게 목적이면 평균만 내면 되지, 왜 굳이 <span markdown="0">\(W\)</span>로 다른 차원으로 보내야 하나?"라는 질문입니다.
+
+결론부터 말하면, <span markdown="0">\(\hat{A}H\)</span>는 정보를 모으는 단계이고 <span markdown="0">\(W\)</span>는 그 정보를 문제에 맞는 의미로 다시 조합하는 단계입니다. 통신망 node feature가 `traffic`과 `error rate` 두 개라고 해봅시다. 이웃 평균을 내면 주변 traffic과 error rate가 섞인 숫자는 얻습니다. 하지만 실제로 알고 싶은 것은 단순 평균이 아닐 수 있어요.
+
+- 트래픽 대비 에러가 비정상적으로 큰가
+- 정상 고트래픽과 장애성 고트래픽을 구분할 수 있는가
+- 이웃과 함께 혼잡 전조 패턴을 보이는가
+- 특정 링크 장애가 주변 노드 표현에 어떻게 퍼지는가
+
+이런 질문은 원래 feature를 그대로 평균내는 것만으로는 부족합니다. <span markdown="0">\(W\)</span>는 기존 feature들을 다른 비율로 조합해 hidden feature를 만듭니다. 사람이 미리 `congestion risk`나 `failure precursor`라는 열을 만들어 넣지 않아도, 학습 과정에서 문제를 잘 푸는 조합을 찾게 하는 장치입니다.
+
+수식의 shape로 보면 역할이 더 분명합니다.
 
 $$
-H^{(l)} \in \mathbb{R}^{N \times d}, \qquad W^{(l)} \in \mathbb{R}^{d \times d'}
+H^{(l)}\in\mathbb{R}^{N\times d},
+\quad
+W^{(l)}\in\mathbb{R}^{d\times d'},
+\quad
+H^{(l)}W^{(l)}\in\mathbb{R}^{N\times d'}
 $$
 
-이때 <span markdown="0">\(H^{(l)}W^{(l)}\)</span>는 <span markdown="0">\(N \times d'\)</span>가 됩니다. node 개수 <span markdown="0">\(N\)</span>은 유지되고, feature 차원만 <span markdown="0">\(d\)</span>에서 <span markdown="0">\(d'\)</span>로 바뀌는 거죠. 반대로 이 표기에서 <span markdown="0">\(W^{(l)}H^{(l)}\)</span>를 그대로 쓰면 일반적으로 차원이 맞지 않습니다.
+노드 수 <span markdown="0">\(N\)</span>은 그대로 남고, feature 차원만 <span markdown="0">\(d\)</span>에서 <span markdown="0">\(d'\)</span>로 바뀝니다. 예시에서 2차원을 4차원으로 보내는 것은 하나의 설명일 뿐입니다. 실제로는 더 크게 만들 수도, 더 작게 압축할 수도, 같은 크기를 유지할 수도 있습니다.
+
+| 변환 | 언제 쓰기 쉬운가 | 직관 |
+| --- | --- | --- |
+| 2 -> 8 | 입력 feature가 너무 단순할 때 | 숨은 패턴을 더 풍부하게 표현 |
+| 100 -> 16 | 원래 feature가 많거나 노이즈가 클 때 | 요약 embedding으로 압축 |
+| 32 -> 32 | 크기는 충분하지만 조합을 바꾸고 싶을 때 | 같은 크기의 표현 공간을 재정렬 |
+
+Q&A에서 썼던 <span markdown="0">\(hW\)</span> 예시는 한 노드만 떼어 본 경우입니다. 예를 들어 한 노드의 feature가 <span markdown="0">\(h=[10,2]\)</span>라면, 이것은 전체 행렬 <span markdown="0">\(H\)</span>의 한 행입니다. 실제 GCN에서는 전체 노드를 한꺼번에 씁니다.
+
+$$
+H=
+\begin{bmatrix}
+10&2\\
+7&1\\
+4&3
+\end{bmatrix},
+\quad
+W=
+\begin{bmatrix}
+1&0&1&-1\\
+0&1&2&1
+\end{bmatrix}
+$$
+
+여기서 <span markdown="0">\(H\)</span>는 <span markdown="0">\(3\times2\)</span>이고, <span markdown="0">\(W\)</span>는 <span markdown="0">\(2\times4\)</span>입니다. 결과 <span markdown="0">\(HW\)</span>는 <span markdown="0">\(3\times4\)</span>가 됩니다. 3개 노드는 그대로이고, 각 노드의 feature만 2개에서 4개로 바뀌는 거예요.
+
+이제 "왜 <span markdown="0">\(W\)</span>가 뒤에 붙나"도 shape로 읽을 수 있습니다. 선형대수 교재에서 벡터를 열벡터로 두면 <span markdown="0">\(Wx\)</span>가 자연스럽습니다. 하지만 GCN 설명에서는 한 노드를 행벡터로 두고, 전체 노드를 <span markdown="0">\(H\in\mathbb{R}^{N\times d}\)</span>로 쌓는 convention을 자주 씁니다. 이 convention에서는 feature 변환이 <span markdown="0">\(HW\)</span>입니다.
+
+<div class="notice--warning" markdown="1">
+
+**헷갈리기 쉬운 표기**
+
+- 열벡터 convention에서는 <span markdown="0">\(Wx\)</span>가 자연스럽습니다.
+- 행벡터 convention에서는 <span markdown="0">\(xW\)</span>가 자연스럽습니다.
+- GCN에서는 전체 노드 feature를 <span markdown="0">\(N\times d\)</span> 행렬로 두는 경우가 많아서 <span markdown="0">\(HW\)</span>가 자주 나옵니다.
+
+</div>
+
+여기서 한 걸음 더 가면 <span markdown="0">\(\hat{A}HW\)</span>와 <span markdown="0">\(HWA\)</span>의 차이도 보입니다. <span markdown="0">\(\hat{A}\)</span>는 node-to-node 관계를 담은 행렬입니다. 그래서 왼쪽에서 곱해 node 축에 작용해야 합니다. <span markdown="0">\(W\)</span>는 feature-to-feature 변환이므로 오른쪽에서 곱해 feature 축에 작용합니다.
 
 | 곱 | 작용하는 축 | 의미 |
 | --- | --- | --- |
 | <span markdown="0">\(\hat{A}H\)</span> | node 축 | graph topology를 따라 이웃 node 정보를 섞음 |
 | <span markdown="0">\(HW\)</span> | feature 축 | 각 node의 feature vector를 새 표현 공간으로 변환 |
 | <span markdown="0">\(\hat{A}HW\)</span> | node 축 다음 feature 축 | 이웃 집계와 feature 변환을 함께 수행 |
+| <span markdown="0">\(HWA\)</span> | 보통 의미와 차원이 어긋남 | adjacency를 feature 변환 뒤 오른쪽에 붙여 GCN 집계로 읽기 어려움 |
 
-이 표를 놓고 보면 <span markdown="0">\(HWA\)</span>가 왜 이상한지도 보입니다. adjacency는 node-to-node 관계를 담는 행렬이므로 node 축에 작용해야 합니다. feature 변환 뒤에 adjacency를 오른쪽에서 붙이면 feature 축 뒤에 node 관계를 억지로 붙이는 모양이 되고, 보통은 차원도 의미도 맞지 않아요.
+다만 <span markdown="0">\((\hat{A}H)W\)</span>와 <span markdown="0">\(\hat{A}(HW)\)</span>는 별개로 봐야 합니다. 차원이 맞으면 행렬 곱의 결합법칙 때문에 수학적 결과는 같습니다. 하지만 설명할 때는 <span markdown="0">\(\hat{A}H\)</span>를 "이웃과 섞기", <span markdown="0">\(HW\)</span>를 "feature 바꾸기"로 분리해 읽는 편이 훨씬 덜 헷갈립니다.
 
-<div class="notice--warning" markdown="1">
+## 5. 다음 모델은 집계 방식을 바꿔 읽습니다
 
-**수식에서 놓치기 쉬운 점**
+GCN을 여기까지 읽으면 GAT과 GraphSAGE도 덜 낯설어집니다. 둘 다 GNN의 message passing 틀에서 출발하지만, "이웃을 어떻게 고르고 얼마나 반영할 것인가"를 다르게 설계합니다.
 
-- <span markdown="0">\((\hat{A}H)W\)</span>와 <span markdown="0">\(\hat{A}(HW)\)</span>는 차원이 맞으면 행렬 곱의 결합법칙 때문에 같은 결과가 됩니다.
-- 하지만 <span markdown="0">\(HWA\)</span>는 adjacency가 작용해야 할 축이 달라지므로 GCN의 이웃 aggregation으로 읽기 어렵습니다.
+GCN은 정규화된 adjacency를 쓰기 때문에 이웃의 가중치가 graph degree에서 나옵니다. 반면 그래프 어텐션 네트워크 (Graph Attention Network, GAT)는 attention weight를 학습해 중요한 이웃에 더 큰 가중치를 줍니다.<sup><a href="#src-1">[1]</a></sup> 그래서 GCN을 "정규화된 이웃 평균"에 가깝게 기억한다면, GAT은 "이웃별 중요도를 학습하는 집계"로 넘어갈 수 있습니다.
 
-</div>
+GraphSAGE도 완전히 다른 철학은 아닙니다. GraphSAGE는 local neighborhood feature를 aggregate하는 함수 자체를 학습하고, 모든 이웃을 다 보지 않고 sampling을 사용합니다. 그래서 seen node만 외우는 transductive setting보다, 새 node가 들어와도 주변 feature를 모아 embedding을 만들 수 있는 inductive setting에 더 잘 맞습니다. GraphSAGE를 공부하기 전에 GCN을 봐야 하는 이유는 여기에 있습니다. 먼저 "이웃 정보를 모아 node 표현을 갱신한다"는 뼈대가 잡혀야 sampling과 aggregation 함수의 의미가 보입니다.
 
-## 4. 운영 모델로 쓰려면 한계도 같이 봐야 합니다
+하지만 논문은 GNN을 장점만 있는 도구로 마무리하지 않습니다. 공개 학습 데이터가 부족하고, 많은 연구가 100개 미만 node 수준의 작은 topology에 머물렀으며, 실제 대규모 네트워크로 가려면 graph partitioning과 parallel computing이 필요할 수 있다고 봅니다.<sup><a href="#src-1">[1]</a></sup> GCN layer를 너무 깊게 쌓으면 node 표현이 서로 비슷해지는 over-smoothing도 문제입니다.<sup><a href="#src-1">[1]</a></sup>
 
-논문이 좋았던 점은 GNN을 좋은 말로만 끝내지 않는다는 데 있습니다. 첫 번째 한계는 데이터입니다. 이미지 분야의 ImageNet 같은 대규모 공개 benchmark에 비해, 통신망 GNN을 학습할 공개 데이터는 부족하고 규모도 실제 운영망에 비해 작다고 봅니다.<sup><a href="#src-1">[1]</a></sup>
-
-두 번째 한계는 GNN depth입니다. 논문은 GCN layer가 많아질수록 node 표현이 지나치게 비슷해지는 over-smoothing 문제를 지적합니다.<sup><a href="#src-1">[1]</a></sup> 통신망에서는 node별 역할이 라우터 위치, 링크 용량, traffic pattern에 따라 달라질 수 있는데, 모든 node 표현이 비슷해지면 오히려 운영 판단에 필요한 차이가 사라질 수 있습니다.
-
-세 번째는 안정성과 설명가능성입니다. 통신망에서는 link failure, congestion, targeted attack 같은 상황이 실제로 생깁니다. 논문은 이런 stochastic perturbation과 adversarial attack 아래에서 GNN 안정성을 따로 봐야 한다고 말합니다.<sup><a href="#src-1">[1]</a></sup> 또 routing이나 resource allocation에 모델 예측을 연결하려면, 왜 그런 판단이 나왔는지 운영자가 추적할 수 있어야 합니다.
-
-마지막으로 규모 문제가 남습니다. Future directions에서 논문은 많은 연구가 100개 미만 node 수준의 작은 topology를 다룬다고 지적합니다.<sup><a href="#src-1">[1]</a></sup> 실제 backbone이나 대규모 데이터센터에 적용하려면 graph partitioning, parallel computing, 성능 향상 폭과 계산 비용의 trade-off를 같이 봐야 합니다.
+통신망에서는 안정성도 따로 봐야 합니다. link failure, congestion, targeted attack 같은 perturbation이 실제로 생기기 때문입니다. routing이나 resource allocation에 모델 예측을 연결하려면, 운영자가 왜 그런 판단이 나왔는지 설명할 수 있어야 합니다. 그러니 이 논문을 읽고 남길 결론은 "GNN을 쓰자"가 아니라 "그래프 구조를 모델에 넣을 수 있지만, 운영망에서는 데이터, 규모, 안정성, 설명가능성을 같이 검증해야 한다"에 가깝습니다.
 
 ## 마무리
 
-이 논문을 읽고 나면 GNN은 "통신망에 딥러닝을 붙였다"보다 "통신망이 원래 갖고 있던 그래프 구조를 모델이 읽게 했다"는 쪽에 더 가깝게 보입니다. 특히 유선 네트워크에서는 topology와 traffic을 함께 읽어 delay, routing, configuration, security 판단으로 연결하는 흐름이 중요해요.
+이번에 Q&A를 길게 쌓으면서 글의 중심이 바뀌었습니다. 처음에는 Jiang의 서베이를 유선 네트워크 적용 사례 중심으로 읽으려 했지만, 실제로 오래 남은 질문은 <span markdown="0">\(\hat{A}H W\)</span>가 무슨 일을 하는지였습니다. 이제는 이 식을 "node 축에서 이웃과 섞고, feature 축에서 의미를 바꾼다"로 읽을 수 있습니다.
 
-제가 Q&A로 정리한 GCN 수식도 같은 관점에서 풀립니다. <span markdown="0">\(\hat{A}H\)</span>는 이웃과 섞는 일이고, <span markdown="0">\(W\)</span>는 feature를 바꾸는 일입니다. 다음에 이 주제를 더 이어간다면, RouteNet이나 SGCRN처럼 유선망에서 실제로 delay와 traffic을 예측하는 모델 하나를 잡고 "그래프 입력이 운영 판단으로 어떻게 넘어가는가"를 더 구체적으로 보는 편이 좋겠습니다.
+이 관점으로 다시 보면 통신망 GNN도 조금 덜 추상적입니다. 유선망의 라우터와 링크, traffic matrix와 routing scheme은 <span markdown="0">\(H\)</span>와 <span markdown="0">\(\hat{A}\)</span>가 되고, 예측하려는 delay, traffic, FCT, security signal은 운영 판단으로 넘어갈 후보가 됩니다. 다음에 이어서 본다면 RouteNet이나 SGCRN 같은 모델 하나를 잡고, 실제로 topology와 traffic이 어떤 입력 텐서로 들어가고 어떤 운영 지표로 나오는지 더 좁게 추적하는 편이 좋겠습니다.
 
 ## 출처
 
