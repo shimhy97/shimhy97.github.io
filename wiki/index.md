@@ -2,7 +2,7 @@
 title: "블로그 위키 인덱스"
 type: index
 status: active
-updated_at: 2026-04-14
+updated_at: 2026-04-21
 tags:
   - wiki
   - index
@@ -26,6 +26,7 @@ tags:
 - [[wiki/sources/llm-wiki|sources/llm-wiki.md]]: LLM이 raw 문서 대신 지속적으로 유지되는 중간 위키를 관리한다는 패턴을 요약한다.
 - [[wiki/sources/open-trading-api|sources/open-trading-api.md]]: 한국투자증권 Open API 샘플 저장소가 자동매매 작업공간으로 확장된 구조를 요약한다.
 - [[wiki/sources/melu-cold-start-recommendation|sources/melu-cold-start-recommendation.md]]: MeLU 논문을 few-shot 콜드스타트 추천 관점에서 요약한다.
+- [[wiki/sources/@jiangGraphbasedDeepLearning2022|sources/@jiangGraphbasedDeepLearning2022.md]]: 통신망에서 GNN/GCN/MPNN을 topology-aware modeling, 유선망 예측, routing, security 문제에 적용하는 서베이를 요약한다.
 
 ## 주제 페이지
 

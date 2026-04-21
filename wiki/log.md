@@ -2,7 +2,7 @@
 title: "블로그 위키 로그"
 type: log
 status: active
-updated_at: 2026-04-20
+updated_at: 2026-04-21
 tags:
   - wiki
   - log
@@ -150,3 +150,13 @@ tags:
 - `_posts/2026-04-06-open-trading-api-workbench.md`를 기존 운영 로직 설명에서 벗어나, 예제와 실거래, 설계와 검증, 신호와 주문, 기억과 기록의 경계를 배운 회고형 글로 다시 썼다.
 - `docs/technical-post-writing-guide.md`와 `docs/blog-engineering-guide.md` 기준에 맞춰 `reading-post`, 요약 박스, Mermaid 다이어그램, 비교 표, notice 박스를 추가했다.
 - `wiki/drafts/2026-04-06-open-trading-api-workbench.md`도 새 중심 문장과 섹션 구조에 맞춰 갱신했다.
+
+## [2026-04-21] ingest | 통신망 GNN 서베이
+
+- Zotero source note `wiki/sources/@jiangGraphbasedDeepLearning2022.md`를 정리해 논문 핵심, 유선 네트워크 활용, GNN-to-GCN 수식 Q&A, 후속 조사 지점을 남겼다.
+- 학습 Q&A `raw/assets/qna_GNN_GCN.md`의 메시지 패싱, 정규화 adjacency, 행/열 convention 설명을 source note에 반영했다.
+
+## [2026-04-21] publish | 통신망 GNN을 읽는 법
+
+- `_posts/2026-04-21-gnn-gcn-wired-communication-networks.md`를 작성해 통신망 GNN 서베이를 논문 요약, 유선망 활용, GCN 수식 이해 순서로 발행했다.
+- `docs/technical-post-writing-guide.md`와 `docs/blog-engineering-guide.md` 기준에 맞춰 요약 박스, Mermaid 다이어그램, 유선망 활용 표, notice 박스, 출처 섹션을 포함했다.
