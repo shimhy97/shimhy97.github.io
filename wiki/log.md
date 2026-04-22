@@ -2,7 +2,7 @@
 title: "블로그 위키 로그"
 type: log
 status: active
-updated_at: 2026-04-21
+updated_at: 2026-04-23
 tags:
   - wiki
   - log
@@ -166,3 +166,9 @@ tags:
 - `raw/assets/qna_GNN_GCN.md`에 추가된 GraphSAGE 선수학습, message passing, GCN 수식, `W` 차원 변환, 행/열 convention 질문을 `wiki/sources/@jiangGraphbasedDeepLearning2022.md`에 반영했다.
 - `_posts/2026-04-21-gnn-gcn-wired-communication-networks.md`를 처음부터 다시 써서 유선망 활용과 GNN/GCN 수식 학습 흐름이 함께 읽히도록 구조를 바꿨다.
 - `docs/technical-post-writing-guide.md`와 `docs/blog-engineering-guide.md` 기준에 맞춰 요약 박스, 표, Mermaid 다이어그램, 수식, notice 박스, 출처 섹션을 다시 정리했다.
+
+## [2026-04-23] publish | GNN/GCN 글 다이어그램 보강
+
+- `diagram-design` 스킬을 설치하고 `https://shimhy97.github.io`와 로컬 블로그 테마 기준으로 다이어그램 토큰을 맞췄다.
+- `assets/diagrams/gnn-gcn-wired-communication-networks/`에 통신망 입력 흐름, message passing, GCN layer pipeline HTML artifact 3개를 추가했다.
+- `_posts/2026-04-21-gnn-gcn-wired-communication-networks.md`에서 기존 Mermaid 2개를 iframe 다이어그램으로 교체하고, message passing 설명용 다이어그램을 본문에 추가했다.

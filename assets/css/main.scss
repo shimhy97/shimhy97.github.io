@@ -36,6 +36,24 @@
   color: #5b6472;
 }
 
+.page__content .diagram-figure {
+  margin: 2rem auto 2.25rem;
+}
+
+.page__content .diagram-frame {
+  display: block;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 960 / 520;
+  border: 1px solid rgba(61, 65, 68, 0.12);
+  border-radius: 8px;
+  background: #fafaf7;
+}
+
+.page__content figcaption.figure-caption {
+  margin-top: 0.65rem;
+}
+
 .reading-post .page__content > :not(.sidebar__right) {
   max-width: 46rem;
   margin-inline: auto;
@@ -48,6 +66,10 @@
 .reading-post .page__content > pre,
 .reading-post .page__content > div.highlighter-rouge,
 .reading-post .page__content > figure {
+  max-width: 52rem;
+}
+
+.reading-post .page__content > .diagram-figure {
   max-width: 52rem;
 }
 

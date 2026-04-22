@@ -1,0 +1,165 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>GCN layer pipeline</title>
+    <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Geist:wght@400;500;600&family=Geist+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    <style>
+      :root {
+        --paper: #fafaf7;
+        --ink: #3d4144;
+        --muted: #5b6472;
+        --soft: #7a8288;
+        --rule: rgba(61, 65, 68, 0.12);
+        --accent: #1f6feb;
+        --accent-tint: rgba(31, 111, 235, 0.08);
+        --link: #3b9cba;
+      }
+
+      html,
+      body {
+        margin: 0;
+        background: transparent;
+      }
+
+      body {
+        font-family: Geist, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+        color: var(--ink);
+      }
+
+      .sheet {
+        box-sizing: border-box;
+        width: 100%;
+        background: var(--paper);
+      }
+
+      svg {
+        display: block;
+        width: 100%;
+        height: auto;
+      }
+
+      .title {
+        font-family: "Instrument Serif", Georgia, serif;
+        font-size: 32px;
+        font-weight: 400;
+        fill: var(--ink);
+      }
+
+      .subtitle,
+      .note {
+        font-size: 12px;
+        fill: var(--muted);
+      }
+
+      .eyebrow,
+      .mono,
+      .arrow-label {
+        font-family: "Geist Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
+        letter-spacing: 0;
+      }
+
+      .eyebrow {
+        font-size: 8px;
+        font-weight: 500;
+        fill: var(--soft);
+      }
+
+      .node-title {
+        font-size: 16px;
+        font-weight: 600;
+        fill: var(--ink);
+      }
+
+      .mono {
+        font-size: 12px;
+        fill: var(--muted);
+      }
+
+      .formula {
+        font-family: "Geist Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
+        font-size: 12px;
+        fill: var(--ink);
+      }
+
+      .arrow-label {
+        font-size: 8px;
+        fill: var(--muted);
+      }
+    </style>
+  </head>
+  <body>
+    <main class="sheet" aria-label="GCN layer에서 노드 축 집계와 피처 축 변환이 이어지는 순서">
+      <svg viewBox="0 0 960 500" role="img" aria-labelledby="title desc">
+        <title id="title">GCN layer pipeline</title>
+        <desc id="desc">현재 노드 피처가 정규화된 adjacency로 이웃과 섞이고, weight matrix로 피처 변환된 뒤 활성화를 거쳐 다음 layer 표현이 되는 과정</desc>
+        <defs>
+          <marker id="arrow" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+            <polygon points="0 0, 8 3, 0 6" fill="#5b6472"/>
+          </marker>
+          <marker id="arrow-accent" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+            <polygon points="0 0, 8 3, 0 6" fill="#1f6feb"/>
+          </marker>
+        </defs>
+
+        <rect width="960" height="500" fill="#fafaf7"/>
+
+        <text x="48" y="56" class="title">GCN 식은 node 축과 feature 축을 차례로 건드립니다</text>
+        <text x="48" y="84" class="subtitle">Ahat은 왼쪽에서 노드 관계를 섞고, W는 오른쪽에서 각 노드의 feature 의미를 바꿉니다.</text>
+
+        <path d="M188 236 H220" stroke="#5b6472" stroke-width="1.2" marker-end="url(#arrow)"/>
+        <path d="M360 236 H392" stroke="#1f6feb" stroke-width="1.2" marker-end="url(#arrow-accent)"/>
+        <path d="M532 236 H564" stroke="#5b6472" stroke-width="1.2" marker-end="url(#arrow)"/>
+        <path d="M704 236 H736" stroke="#5b6472" stroke-width="1.2" marker-end="url(#arrow)"/>
+
+        <rect x="200" y="212" width="32" height="16" fill="#fafaf7"/>
+        <text x="204" y="224" class="arrow-label">MIX</text>
+        <rect x="372" y="212" width="48" height="16" fill="#fafaf7"/>
+        <text x="376" y="224" class="arrow-label">PROJECT</text>
+        <rect x="544" y="212" width="36" height="16" fill="#fafaf7"/>
+        <text x="548" y="224" class="arrow-label">RELU</text>
+
+        <rect x="48" y="172" width="140" height="128" rx="8" fill="#ffffff"/>
+        <rect x="48" y="172" width="140" height="128" rx="8" fill="none" stroke="#3d4144" stroke-width="1"/>
+        <text x="68" y="204" class="eyebrow">INPUT</text>
+        <text x="68" y="236" class="formula">H(l)</text>
+        <text x="68" y="264" class="mono">current node</text>
+        <text x="68" y="284" class="mono">features</text>
+
+        <rect x="220" y="172" width="140" height="128" rx="8" fill="#fafaf7"/>
+        <rect x="220" y="172" width="140" height="128" rx="8" fill="rgba(31,111,235,0.08)" stroke="#1f6feb" stroke-width="1.2"/>
+        <text x="240" y="204" class="eyebrow">NODE AXIS</text>
+        <text x="240" y="236" class="formula">Ahat H(l)</text>
+        <text x="240" y="264" class="mono">self + neighbor</text>
+        <text x="240" y="284" class="mono">aggregation</text>
+
+        <rect x="392" y="172" width="140" height="128" rx="8" fill="#ffffff"/>
+        <rect x="392" y="172" width="140" height="128" rx="8" fill="none" stroke="#3d4144" stroke-width="1"/>
+        <text x="412" y="204" class="eyebrow">FEATURE AXIS</text>
+        <text x="412" y="236" class="formula">Ahat H(l) W(l)</text>
+        <text x="412" y="264" class="mono">learned feature</text>
+        <text x="412" y="284" class="mono">projection</text>
+
+        <rect x="564" y="172" width="140" height="128" rx="8" fill="#ffffff"/>
+        <rect x="564" y="172" width="140" height="128" rx="8" fill="none" stroke="#5b6472" stroke-width="1"/>
+        <text x="584" y="204" class="eyebrow">NONLINEAR</text>
+        <text x="584" y="236" class="formula">sigma(.)</text>
+        <text x="584" y="264" class="mono">ReLU or other</text>
+        <text x="584" y="284" class="mono">activation</text>
+
+        <rect x="736" y="172" width="160" height="128" rx="8" fill="#ffffff"/>
+        <rect x="736" y="172" width="160" height="128" rx="8" fill="none" stroke="#5b6472" stroke-width="1"/>
+        <text x="756" y="204" class="eyebrow">OUTPUT</text>
+        <text x="756" y="236" class="formula">H(l+1)</text>
+        <text x="756" y="264" class="mono">new node</text>
+        <text x="756" y="284" class="mono">representation</text>
+
+        <rect x="160" y="360" width="640" height="72" rx="8" fill="#ffffff"/>
+        <rect x="160" y="360" width="640" height="72" rx="8" fill="none" stroke="rgba(61,65,68,0.12)" stroke-width="1"/>
+        <text x="184" y="392" class="node-title">shape로 읽는 기준</text>
+        <text x="184" y="420" class="mono">Ahat: N x N, node-to-node relation.   W: d x d', feature-to-feature transform.</text>
+      </svg>
+    </main>
+  </body>
+</html>

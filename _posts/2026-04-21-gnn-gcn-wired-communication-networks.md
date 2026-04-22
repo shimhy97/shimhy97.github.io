@@ -39,15 +39,10 @@ Weiwei Jiang의 `Graph-based Deep Learning for Communication Networks: A Survey`
 
 기존 딥러닝은 이미지처럼 격자 구조가 있거나, 시계열처럼 순서가 분명한 데이터에 잘 맞았습니다. 반면 통신망은 라우터와 링크, 송수신 페어와 간섭, 플로우와 경로가 얽힌 비유클리드 구조입니다. 논문은 이 지점에서 GNN이 자연스럽다고 봅니다. 유선 backbone에서는 node가 router이고 edge가 physical transmission link입니다. node feature에는 in-flow와 out-flow traffic이 들어갈 수 있고, edge feature에는 bandwidth나 delay 같은 transmission metric이 들어갈 수 있어요.<sup><a href="#src-1">[1]</a></sup>
 
-```mermaid
-flowchart LR
-  A["통신망 관찰<br/>router · link · traffic"] --> B["그래프 정의<br/>node · edge · feature"]
-  B --> C["GNN 계열 모델<br/>GCN · GAT · MPNN · GraphSAGE"]
-  C --> D["운영 지표 예측<br/>delay · loss · traffic · FCT"]
-  D --> E["운영 판단<br/>routing · load balancing · configuration"]
-```
-
-<p class="figure-caption">이 글에서 중요한 흐름은 통신망을 표나 시계열로만 펴지 않고, topology를 가진 그래프로 만든 뒤 운영 판단으로 연결하는 점이에요.</p>
+<figure class="diagram-figure">
+  <iframe class="diagram-frame" src="/assets/diagrams/gnn-gcn-wired-communication-networks/network-to-gnn.html" title="통신망 topology가 GNN 입력이 되는 흐름"></iframe>
+  <figcaption class="figure-caption">이 글에서 중요한 흐름은 통신망을 표나 시계열로만 펴지 않고, topology를 가진 그래프로 만든 뒤 운영 판단으로 연결하는 점이에요.</figcaption>
+</figure>
 
 여기서 "그래프로 만든다"는 말은 생각보다 구체적입니다. 무엇을 node로 볼지, 어떤 관계를 edge로 둘지, node feature와 edge feature에 무엇을 넣을지를 먼저 정해야 합니다. 이 결정을 흐리면 GNN 모델 이름을 바꿔도 문제 정의가 선명해지지 않습니다. GraphSAGE를 공부하기 전에도 결국 같은 질문으로 돌아옵니다. "내 문제의 node feature는 무엇이고, edge는 어떤 기준으로 만들 것인가?"
 
@@ -97,6 +92,13 @@ $$
 $$
 X_i^{(t)}=U^{(t)}(X_i^{(t-1)},m_i^{(t)})
 $$
+
+이 수식의 흐름은 작은 그래프 하나를 놓고 보면 훨씬 덜 추상적입니다. 아래 그림은 `1 - 2 - 3` 그래프에서 중심 노드 2가 양쪽 이웃의 메시지를 받아 새 표현을 만드는 과정을 보여 줍니다.
+
+<figure class="diagram-figure">
+  <iframe class="diagram-frame" src="/assets/diagrams/gnn-gcn-wired-communication-networks/message-passing.html" title="1-2-3 그래프에서 message passing 읽기"></iframe>
+  <figcaption class="figure-caption">message passing은 이웃이 보낸 메시지를 모으고, 그 집계값으로 중심 노드 표현을 갱신하는 순서로 읽으면 됩니다.</figcaption>
+</figure>
 
 첫 번째 식은 이웃이 보내는 메시지를 모으는 단계입니다. <span markdown="0">\(i\)</span>는 지금 업데이트하려는 중심 노드이고, <span markdown="0">\(N(i)\)</span>는 그 노드의 이웃 집합입니다. <span markdown="0">\(X_i^{(t-1)}\)</span>는 중심 노드의 이전 표현, <span markdown="0">\(X_j^{(t-1)}\)</span>는 이웃 노드의 이전 표현입니다. <span markdown="0">\(e_{ij}\)</span>는 두 노드 사이의 edge feature인데, 통신망에서는 링크 대역폭, 지연, 거리, 연결 종류 같은 값이 들어갈 수 있습니다.
 
@@ -183,15 +185,10 @@ $$
 
 이 식을 너무 어렵게 볼 필요는 없습니다. <span markdown="0">\(\hat{A}H^{(l)}\)</span>는 "정규화된 자기 자신 + 이웃 feature 섞기"이고, <span markdown="0">\(W^{(l)}\)</span>는 "섞인 feature를 새 표현 공간으로 바꾸기"입니다. <span markdown="0">\(\sigma\)</span>는 ReLU 같은 활성화 함수입니다.
 
-```mermaid
-flowchart LR
-  A["H^(l)<br/>현재 노드 feature"] --> B["Ahat H^(l)<br/>자기 자신 + 이웃 집계"]
-  B --> C["Ahat H^(l) W^(l)<br/>feature 변환"]
-  C --> D["sigma(.)<br/>비선형성"]
-  D --> E["H^(l+1)<br/>새 노드 표현"]
-```
-
-<p class="figure-caption">GCN 식은 message passing을 행렬곱으로 압축한 표기입니다. 먼저 node 축에서 이웃을 섞고, 그다음 feature 축에서 표현을 바꿉니다.</p>
+<figure class="diagram-figure">
+  <iframe class="diagram-frame" src="/assets/diagrams/gnn-gcn-wired-communication-networks/gcn-layer-pipeline.html" title="GCN layer에서 node 축 집계와 feature 축 변환이 이어지는 순서"></iframe>
+  <figcaption class="figure-caption">GCN 식은 message passing을 행렬곱으로 압축한 표기입니다. 먼저 node 축에서 이웃을 섞고, 그다음 feature 축에서 표현을 바꿉니다.</figcaption>
+</figure>
 
 여기까지 오면 "GCN에도 aggregation이 들어가나?"라는 질문에는 분명히 답할 수 있습니다. 들어갑니다. 오히려 GCN의 핵심이 aggregation입니다. 다만 이 aggregation을 <span markdown="0">\(\hat{A}H\)</span>라는 행렬곱으로 깔끔하게 쓴 것뿐이에요.
 
