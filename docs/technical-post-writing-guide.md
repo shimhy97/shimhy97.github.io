@@ -86,6 +86,17 @@
 - Kramdown이 inline `$...$` 안의 `_`를 강조 문법으로 오인해 HTML이 깨질 수 있으므로, 복잡한 inline 수식은 반드시 위 패턴을 우선한다.
 - 수식이 포함된 글은 가능하면 `rbenv exec bundle exec jekyll build`로 생성 HTML을 한 번 확인하고 발행한다.
 
+## 다이어그램 삽입 규칙
+
+- HTML/SVG 다이어그램은 `assets/diagrams/<post-slug>/` 아래에 독립 artifact로 두고, 본문에서는 `figure.diagram-figure`와 `iframe.diagram-frame`으로 삽입한다.
+- 본문에 삽입되는 다이어그램은 문단 폭보다 약간 넓게 읽혀야 한다. 데스크톱 기준 최대 폭은 보통 `56rem` 안팎으로 잡고, 전체 viewport에 가깝게 키우지 않는다.
+- 다이어그램 iframe은 내부 artifact의 aspect-ratio를 따라야 한다. 폭만 키우고 높이를 고정하면 내부 SVG의 아래쪽이 잘리므로, `aspect-ratio`와 모바일용 `min-height`를 함께 둔다.
+- shipped blog diagram에는 핵심 텍스트 8px를 쓰지 않는다. 블로그 본문용 기준은 제목 34-36px, node title 18-20px, sublabel 13-14px, arrow/formula label 11-18px이다.
+- node/card 내부 padding은 최소 좌우 24px, 상하 24px로 둔다. 마지막 텍스트 baseline은 박스 하단에서 최소 24px 이상 떨어지게 배치한다.
+- 수식이 들어가는 다이어그램은 SVG `<text>`에 TeX 문자열을 그대로 넣지 않는다. HTML overlay나 `foreignObject` 안의 HTML에 `\(...\)`를 넣고, artifact 내부에서 MathJax를 로드해 `typesetPromise()`로 렌더링한다.
+- 복잡하거나 재사용되는 수식은 MathJax의 `tex2svgPromise()`로 사전 변환해 static SVG snippet으로 넣는 방식을 우선 검토한다.
+- 다이어그램을 추가한 글은 로컬 브라우저에서 데스크톱과 모바일 폭을 모두 확인한다. 화면에 raw `\(...\)`가 보이거나, 카드 텍스트가 하단에 붙거나, 프레임이 문단 절반 폭처럼 보이면 발행하지 않는다.
+
 예시:
 
 - `시가 구간 돌파 전략 (Opening Range Breakout, ORB)`

@@ -5,6 +5,19 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>1-2-3 그래프에서 message passing 읽기</title>
     <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Geist:wght@400;500;600&family=Geist+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    <script>
+      window.MathJax = {
+        tex: {
+          inlineMath: [['\\(', '\\)']],
+          processEscapes: true
+        },
+        options: {
+          enableMenu: false,
+          skipHtmlTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      };
+    </script>
+    <script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js"></script>
     <style>
       :root {
         --paper: #fafaf7;
@@ -14,7 +27,6 @@
         --rule: rgba(61, 65, 68, 0.12);
         --accent: #1f6feb;
         --accent-tint: rgba(31, 111, 235, 0.08);
-        --link: #3b9cba;
       }
 
       html,
@@ -24,134 +36,177 @@
       }
 
       body {
+        overflow-x: auto;
+        overflow-y: hidden;
         font-family: Geist, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
         color: var(--ink);
       }
 
       .sheet {
-        box-sizing: border-box;
         width: 100%;
+        min-width: 760px;
         background: var(--paper);
       }
 
+      .canvas {
+        position: relative;
+        width: 100%;
+        aspect-ratio: 1120 / 640;
+      }
+
       svg {
+        position: absolute;
+        inset: 0;
         display: block;
         width: 100%;
-        height: auto;
+        height: 100%;
       }
 
       .title {
         font-family: "Instrument Serif", Georgia, serif;
-        font-size: 32px;
+        font-size: 36px;
         font-weight: 400;
         fill: var(--ink);
       }
 
       .subtitle,
       .note {
-        font-size: 12px;
+        font-size: 16px;
         fill: var(--muted);
       }
 
       .eyebrow,
-      .mono,
-      .arrow-label,
-      .legend {
+      .arrow-label {
         font-family: "Geist Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
         letter-spacing: 0;
       }
 
       .eyebrow {
-        font-size: 8px;
-        font-weight: 500;
+        font-size: 11px;
+        font-weight: 600;
         fill: var(--soft);
       }
 
-      .node-name {
-        font-size: 16px;
+      .node-title {
+        font-size: 20px;
         font-weight: 600;
         fill: var(--ink);
       }
 
-      .mono {
+      .node-sub {
+        font-family: "Geist Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
+        font-size: 14px;
+        fill: var(--muted);
+      }
+
+      .node-value {
+        font-family: "Geist Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
+        font-size: 18px;
+        font-weight: 600;
+        fill: var(--ink);
+      }
+
+      .arrow-label {
         font-size: 12px;
         fill: var(--muted);
       }
 
-      .formula {
-        font-family: "Geist Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
-        font-size: 16px;
-        fill: var(--ink);
+      .math-label {
+        position: absolute;
+        z-index: 2;
+        display: flex;
+        align-items: center;
+        min-height: 34px;
+        color: var(--ink);
+        font-size: clamp(16px, 1.55vw, 22px);
+        line-height: 1.35;
+        pointer-events: none;
       }
 
-      .arrow-label,
-      .legend {
-        font-size: 8px;
-        fill: var(--muted);
+      .math-label--aggregate {
+        top: 78%;
+        left: 17%;
+        width: 29%;
+      }
+
+      .math-label--update {
+        top: 78%;
+        left: 56.5%;
+        width: 30%;
+      }
+
+      .math-label .MathJax {
+        font-size: 100% !important;
       }
     </style>
   </head>
   <body>
-    <main class="sheet" aria-label="노드 2가 이웃 노드 1과 3에서 메시지를 받아 집계하고 업데이트하는 예시">
-      <svg viewBox="0 0 960 520" role="img" aria-labelledby="title desc">
-        <title id="title">1-2-3 그래프에서 message passing 읽기</title>
-        <desc id="desc">노드 1과 3이 노드 2로 메시지를 보내고, 노드 2가 합계 메시지로 새 표현을 만드는 단계</desc>
-        <defs>
-          <marker id="arrow" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
-            <polygon points="0 0, 8 3, 0 6" fill="#5b6472"/>
-          </marker>
-          <marker id="arrow-accent" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
-            <polygon points="0 0, 8 3, 0 6" fill="#1f6feb"/>
-          </marker>
-        </defs>
+    <main class="sheet" aria-label="1-2-3 그래프에서 중심 노드 2가 이웃 메시지를 모아 업데이트되는 흐름">
+      <div class="canvas">
+        <svg viewBox="0 0 1120 640" role="img" aria-labelledby="title desc">
+          <title id="title">1-2-3 그래프에서 message passing 읽기</title>
+          <desc id="desc">노드 1과 3이 중심 노드 2로 메시지를 보내고, 노드 2가 이를 집계한 뒤 자신의 표현을 업데이트하는 다이어그램</desc>
+          <defs>
+            <marker id="arrow" markerWidth="10" markerHeight="8" refX="9" refY="4" orient="auto">
+              <polygon points="0 0, 10 4, 0 8" fill="#5b6472"/>
+            </marker>
+            <marker id="arrow-accent" markerWidth="10" markerHeight="8" refX="9" refY="4" orient="auto">
+              <polygon points="0 0, 10 4, 0 8" fill="#1f6feb"/>
+            </marker>
+          </defs>
 
-        <rect width="960" height="520" fill="#fafaf7"/>
+          <rect width="1120" height="640" fill="#fafaf7"/>
 
-        <text x="48" y="56" class="title">message passing은 이웃 메시지를 모으는 순서입니다</text>
-        <text x="48" y="84" class="subtitle">중심 노드 2가 양쪽 이웃에서 값을 받고, aggregate 결과로 자기 표현을 갱신합니다.</text>
+          <text x="64" y="66" class="title">message passing은 이웃 메시지를 모으는 순서입니다</text>
+          <text x="64" y="100" class="subtitle">장난감 그래프 1 - 2 - 3에서 중심 노드 2의 업데이트만 따라갑니다.</text>
 
-        <path d="M212 224 H396" stroke="#5b6472" stroke-width="1.2" marker-end="url(#arrow)"/>
-        <path d="M748 224 H564" stroke="#5b6472" stroke-width="1.2" marker-end="url(#arrow)"/>
-        <path d="M480 296 V344" stroke="#1f6feb" stroke-width="1.2" marker-end="url(#arrow-accent)"/>
-        <path d="M572 392 H664" stroke="#5b6472" stroke-width="1.2" marker-end="url(#arrow)"/>
+          <path d="M244 248 H446" stroke="#5b6472" stroke-width="1.6" marker-end="url(#arrow)"/>
+          <path d="M876 248 H674" stroke="#5b6472" stroke-width="1.6" marker-end="url(#arrow)"/>
+          <path d="M560 340 V398" stroke="#1f6feb" stroke-width="1.6" marker-end="url(#arrow-accent)"/>
+          <path d="M520 482 H600" stroke="#5b6472" stroke-width="1.6" marker-end="url(#arrow)"/>
 
-        <rect x="280" y="200" width="68" height="16" fill="#fafaf7"/>
-        <text x="284" y="212" class="arrow-label">M = 10</text>
-        <rect x="612" y="200" width="68" height="16" fill="#fafaf7"/>
-        <text x="616" y="212" class="arrow-label">M = 30</text>
+          <rect x="306" y="218" width="78" height="24" fill="#fafaf7"/>
+          <text x="314" y="236" class="arrow-label">message 10</text>
+          <rect x="736" y="218" width="78" height="24" fill="#fafaf7"/>
+          <text x="744" y="236" class="arrow-label">message 30</text>
 
-        <circle cx="160" cy="224" r="52" fill="#ffffff"/>
-        <circle cx="160" cy="224" r="52" fill="none" stroke="#5b6472" stroke-width="1"/>
-        <text x="136" y="212" class="eyebrow">NEIGHBOR</text>
-        <text x="132" y="240" class="node-name">node 1</text>
-        <text x="132" y="264" class="mono">X1 = 10</text>
+          <circle cx="180" cy="248" r="64" fill="#ffffff" stroke="#5b6472" stroke-width="1.2"/>
+          <text x="180" y="236" class="node-title" text-anchor="middle">node 1</text>
+          <text x="180" y="268" class="node-value" text-anchor="middle">X1 = 10</text>
 
-        <circle cx="480" cy="224" r="72" fill="#fafaf7"/>
-        <circle cx="480" cy="224" r="72" fill="rgba(31,111,235,0.08)" stroke="#1f6feb" stroke-width="1.2"/>
-        <text x="444" y="204" class="eyebrow">CENTER</text>
-        <text x="444" y="232" class="node-name">node 2</text>
-        <text x="444" y="260" class="mono">X2 = 20</text>
+          <circle cx="560" cy="248" r="92" fill="rgba(31,111,235,0.08)" stroke="#1f6feb" stroke-width="1.6"/>
+          <text x="560" y="224" class="eyebrow" text-anchor="middle">CENTER</text>
+          <text x="560" y="256" class="node-title" text-anchor="middle">node 2</text>
+          <text x="560" y="290" class="node-value" text-anchor="middle">X2 = 20</text>
 
-        <circle cx="800" cy="224" r="52" fill="#ffffff"/>
-        <circle cx="800" cy="224" r="52" fill="none" stroke="#5b6472" stroke-width="1"/>
-        <text x="776" y="212" class="eyebrow">NEIGHBOR</text>
-        <text x="772" y="240" class="node-name">node 3</text>
-        <text x="772" y="264" class="mono">X3 = 30</text>
+          <circle cx="940" cy="248" r="64" fill="#ffffff" stroke="#5b6472" stroke-width="1.2"/>
+          <text x="940" y="236" class="node-title" text-anchor="middle">node 3</text>
+          <text x="940" y="268" class="node-value" text-anchor="middle">X3 = 30</text>
 
-        <rect x="348" y="344" width="224" height="96" rx="8" fill="#ffffff"/>
-        <rect x="348" y="344" width="224" height="96" rx="8" fill="none" stroke="#3d4144" stroke-width="1"/>
-        <text x="372" y="376" class="eyebrow">AGGREGATE</text>
-        <text x="372" y="408" class="formula">m2 = 10 + 30 = 40</text>
+          <rect x="160" y="398" width="360" height="150" rx="8" fill="#ffffff"/>
+          <rect x="160" y="398" width="360" height="150" rx="8" fill="none" stroke="#3d4144" stroke-width="1.2"/>
+          <text x="188" y="442" class="eyebrow">AGGREGATE</text>
+          <text x="188" y="476" class="node-title">이웃 메시지 합치기</text>
 
-        <rect x="664" y="344" width="224" height="96" rx="8" fill="#ffffff"/>
-        <rect x="664" y="344" width="224" height="96" rx="8" fill="none" stroke="#5b6472" stroke-width="1"/>
-        <text x="688" y="376" class="eyebrow">UPDATE</text>
-        <text x="688" y="408" class="formula">X2(t) = 20 + 1/2 m2</text>
-        <text x="688" y="432" class="mono">new representation = 40</text>
+          <rect x="600" y="398" width="360" height="150" rx="8" fill="#ffffff"/>
+          <rect x="600" y="398" width="360" height="150" rx="8" fill="none" stroke="#5b6472" stroke-width="1.2"/>
+          <text x="628" y="442" class="eyebrow">UPDATE</text>
+          <text x="628" y="476" class="node-title">중심 노드 표현 갱신</text>
 
-        <path d="M48 472 H912" stroke="rgba(61,65,68,0.12)" stroke-width="1"/>
-        <text x="48" y="496" class="legend">읽는 순서: message -> aggregate -> update. t는 실제 시간이 아니라 propagation step에 가깝습니다.</text>
-      </svg>
+          <path d="M64 592 H1056" stroke="rgba(61,65,68,0.12)" stroke-width="1"/>
+          <text x="64" y="616" class="note">sum, mean, max처럼 이웃 순서에 둔감한 집계가 message passing의 핵심입니다.</text>
+        </svg>
+
+        <div class="math-label math-label--aggregate">\(m_2 = 10 + 30 = 40\)</div>
+        <div class="math-label math-label--update">\(X_2^{(t)} = 20 + \frac{1}{2}m_2 = 40\)</div>
+      </div>
     </main>
+    <script>
+      window.addEventListener('load', function () {
+        if (window.MathJax && window.MathJax.typesetPromise) {
+          window.MathJax.typesetPromise();
+        }
+      });
+    </script>
   </body>
 </html>

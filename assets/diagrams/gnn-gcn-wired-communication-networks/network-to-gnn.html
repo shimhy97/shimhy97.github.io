@@ -8,12 +8,10 @@
     <style>
       :root {
         --paper: #fafaf7;
-        --paper-2: #f1f2f3;
         --ink: #3d4144;
         --muted: #5b6472;
         --soft: #7a8288;
         --rule: rgba(61, 65, 68, 0.12);
-        --rule-solid: #cfd4d8;
         --accent: #1f6feb;
         --accent-tint: rgba(31, 111, 235, 0.08);
         --link: #3b9cba;
@@ -26,32 +24,42 @@
       }
 
       body {
+        overflow-x: auto;
+        overflow-y: hidden;
         font-family: Geist, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
         color: var(--ink);
       }
 
       .sheet {
-        box-sizing: border-box;
         width: 100%;
+        min-width: 760px;
         background: var(--paper);
       }
 
+      .canvas {
+        position: relative;
+        width: 100%;
+        aspect-ratio: 1120 / 640;
+      }
+
       svg {
+        position: absolute;
+        inset: 0;
         display: block;
         width: 100%;
-        height: auto;
+        height: 100%;
       }
 
       .title {
         font-family: "Instrument Serif", Georgia, serif;
-        font-size: 32px;
+        font-size: 36px;
         font-weight: 400;
         fill: var(--ink);
       }
 
       .subtitle,
       .note {
-        font-size: 12px;
+        font-size: 16px;
         fill: var(--muted);
       }
 
@@ -63,116 +71,115 @@
       }
 
       .eyebrow {
-        font-size: 8px;
-        font-weight: 500;
+        font-size: 11px;
+        font-weight: 600;
         fill: var(--soft);
       }
 
       .node-title {
-        font-size: 16px;
+        font-size: 20px;
         font-weight: 600;
         fill: var(--ink);
       }
 
       .node-sub {
         font-family: "Geist Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
-        font-size: 12px;
+        font-size: 14px;
         fill: var(--muted);
       }
 
       .arrow-label {
-        font-size: 8px;
+        font-size: 11px;
         fill: var(--muted);
       }
 
       .legend {
-        font-size: 12px;
+        font-size: 13px;
         fill: var(--muted);
       }
     </style>
   </head>
   <body>
     <main class="sheet" aria-label="통신망 관찰이 그래프 정의와 GNN 모델을 거쳐 운영 판단으로 이어지는 흐름">
-      <svg viewBox="0 0 960 520" role="img" aria-labelledby="title desc">
-        <title id="title">통신망 topology가 GNN 입력이 되는 흐름</title>
-        <desc id="desc">라우터, 링크, 트래픽 관찰을 노드, 엣지, 피처 그래프로 바꾸고 GNN 모델을 거쳐 운영 지표와 운영 판단으로 연결하는 다이어그램</desc>
-        <defs>
-          <marker id="arrow" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
-            <polygon points="0 0, 8 3, 0 6" fill="#5b6472"/>
-          </marker>
-          <marker id="arrow-accent" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
-            <polygon points="0 0, 8 3, 0 6" fill="#1f6feb"/>
-          </marker>
-          <marker id="arrow-link" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
-            <polygon points="0 0, 8 3, 0 6" fill="#3b9cba"/>
-          </marker>
-        </defs>
+      <div class="canvas">
+        <svg viewBox="0 0 1120 640" role="img" aria-labelledby="title desc">
+          <title id="title">통신망 topology가 GNN 입력이 되는 흐름</title>
+          <desc id="desc">라우터, 링크, 트래픽 관찰을 노드, 엣지, 피처 그래프로 바꾸고 GNN 모델을 거쳐 운영 지표와 운영 판단으로 연결하는 다이어그램</desc>
+          <defs>
+            <marker id="arrow" markerWidth="10" markerHeight="8" refX="9" refY="4" orient="auto">
+              <polygon points="0 0, 10 4, 0 8" fill="#5b6472"/>
+            </marker>
+            <marker id="arrow-accent" markerWidth="10" markerHeight="8" refX="9" refY="4" orient="auto">
+              <polygon points="0 0, 10 4, 0 8" fill="#1f6feb"/>
+            </marker>
+            <marker id="arrow-link" markerWidth="10" markerHeight="8" refX="9" refY="4" orient="auto">
+              <polygon points="0 0, 10 4, 0 8" fill="#3b9cba"/>
+            </marker>
+          </defs>
 
-        <rect width="960" height="520" fill="#fafaf7"/>
+          <rect width="1120" height="640" fill="#fafaf7"/>
 
-        <text x="48" y="56" class="title">통신망 topology가 GNN 입력이 되는 흐름</text>
-        <text x="48" y="84" class="subtitle">표나 시계열로 펴기 전에, 구조를 가진 그래프로 먼저 번역합니다.</text>
+          <text x="64" y="66" class="title">통신망 topology가 GNN 입력이 되는 흐름</text>
+          <text x="64" y="100" class="subtitle">표나 시계열로 펴기 전에, 구조를 가진 그래프로 먼저 번역합니다.</text>
 
-        <path d="M208 248 H232" stroke="#5b6472" stroke-width="1.2" marker-end="url(#arrow)"/>
-        <path d="M392 248 H416" stroke="#1f6feb" stroke-width="1.2" marker-end="url(#arrow-accent)"/>
-        <path d="M576 248 H600" stroke="#5b6472" stroke-width="1.2" marker-end="url(#arrow)"/>
-        <path d="M760 248 H784" stroke="#3b9cba" stroke-width="1.2" marker-end="url(#arrow-link)"/>
+          <path d="M344 246 H420" stroke="#5b6472" stroke-width="1.4" marker-end="url(#arrow)"/>
+          <path d="M700 246 H776" stroke="#1f6feb" stroke-width="1.4" marker-end="url(#arrow-accent)"/>
+          <path d="M560 334 V396" stroke="#5b6472" stroke-width="1.4" marker-end="url(#arrow)"/>
+          <path d="M700 492 H776" stroke="#3b9cba" stroke-width="1.4" marker-end="url(#arrow-link)"/>
 
-        <rect x="210" y="224" width="20" height="16" fill="#fafaf7"/>
-        <text x="212" y="236" class="arrow-label">MAP</text>
-        <rect x="394" y="224" width="20" height="16" fill="#fafaf7"/>
-        <text x="396" y="236" class="arrow-label">FIT</text>
-        <rect x="578" y="224" width="40" height="16" fill="#fafaf7"/>
-        <text x="580" y="236" class="arrow-label">PREDICT</text>
-        <rect x="762" y="224" width="24" height="16" fill="#fafaf7"/>
-        <text x="764" y="236" class="arrow-label">ACT</text>
+          <rect x="358" y="226" width="44" height="22" fill="#fafaf7"/>
+          <text x="366" y="242" class="arrow-label">MAP</text>
+          <rect x="714" y="226" width="42" height="22" fill="#fafaf7"/>
+          <text x="722" y="242" class="arrow-label">FIT</text>
+          <rect x="577" y="356" width="68" height="22" fill="#fafaf7"/>
+          <text x="584" y="372" class="arrow-label">PREDICT</text>
+          <rect x="714" y="472" width="40" height="22" fill="#fafaf7"/>
+          <text x="722" y="488" class="arrow-label">ACT</text>
 
-        <rect x="48" y="184" width="160" height="128" rx="8" fill="#ffffff"/>
-        <rect x="48" y="184" width="160" height="128" rx="8" fill="none" stroke="#3d4144" stroke-width="1"/>
-        <text x="68" y="216" class="eyebrow">OBSERVE</text>
-        <text x="68" y="244" class="node-title">통신망 관찰</text>
-        <text x="68" y="272" class="node-sub">router</text>
-        <text x="68" y="292" class="node-sub">link</text>
-        <text x="68" y="312" class="node-sub">traffic</text>
+          <rect x="64" y="154" width="280" height="184" rx="8" fill="#ffffff"/>
+          <rect x="64" y="154" width="280" height="184" rx="8" fill="none" stroke="#3d4144" stroke-width="1.2"/>
+          <text x="92" y="198" class="eyebrow">OBSERVE</text>
+          <text x="92" y="234" class="node-title">통신망 관찰</text>
+          <text x="92" y="266" class="node-sub">router</text>
+          <text x="92" y="290" class="node-sub">link</text>
+          <text x="92" y="314" class="node-sub">traffic</text>
 
-        <rect x="232" y="184" width="160" height="128" rx="8" fill="#fafaf7"/>
-        <rect x="232" y="184" width="160" height="128" rx="8" fill="rgba(31,111,235,0.08)" stroke="#1f6feb" stroke-width="1.2"/>
-        <text x="252" y="216" class="eyebrow">GRAPH</text>
-        <text x="252" y="244" class="node-title">그래프 정의</text>
-        <text x="252" y="272" class="node-sub">node</text>
-        <text x="252" y="292" class="node-sub">edge</text>
-        <text x="252" y="312" class="node-sub">feature</text>
+          <rect x="420" y="154" width="280" height="184" rx="8" fill="#fafaf7"/>
+          <rect x="420" y="154" width="280" height="184" rx="8" fill="rgba(31,111,235,0.08)" stroke="#1f6feb" stroke-width="1.4"/>
+          <text x="448" y="198" class="eyebrow">GRAPH</text>
+          <text x="448" y="234" class="node-title">그래프 정의</text>
+          <text x="448" y="266" class="node-sub">node = router / flow</text>
+          <text x="448" y="290" class="node-sub">edge = link / path</text>
+          <text x="448" y="314" class="node-sub">feature = traffic</text>
 
-        <rect x="416" y="184" width="160" height="128" rx="8" fill="#ffffff"/>
-        <rect x="416" y="184" width="160" height="128" rx="8" fill="none" stroke="#3d4144" stroke-width="1"/>
-        <text x="436" y="216" class="eyebrow">MODEL</text>
-        <text x="436" y="244" class="node-title">GNN 계열</text>
-        <text x="436" y="272" class="node-sub">GCN</text>
-        <text x="436" y="292" class="node-sub">GAT / MPNN</text>
-        <text x="436" y="312" class="node-sub">GraphSAGE</text>
+          <rect x="776" y="154" width="280" height="184" rx="8" fill="#ffffff"/>
+          <rect x="776" y="154" width="280" height="184" rx="8" fill="none" stroke="#3d4144" stroke-width="1.2"/>
+          <text x="804" y="198" class="eyebrow">MODEL</text>
+          <text x="804" y="234" class="node-title">GNN 계열</text>
+          <text x="804" y="266" class="node-sub">GCN</text>
+          <text x="804" y="290" class="node-sub">GAT / MPNN</text>
+          <text x="804" y="314" class="node-sub">GraphSAGE</text>
 
-        <rect x="600" y="184" width="160" height="128" rx="8" fill="#ffffff"/>
-        <rect x="600" y="184" width="160" height="128" rx="8" fill="none" stroke="#3d4144" stroke-width="1"/>
-        <text x="620" y="216" class="eyebrow">METRIC</text>
-        <text x="620" y="244" class="node-title">운영 지표</text>
-        <text x="620" y="272" class="node-sub">delay / loss</text>
-        <text x="620" y="292" class="node-sub">traffic</text>
-        <text x="620" y="312" class="node-sub">FCT</text>
+          <rect x="240" y="400" width="320" height="184" rx="8" fill="#ffffff"/>
+          <rect x="240" y="400" width="320" height="184" rx="8" fill="none" stroke="#3d4144" stroke-width="1.2"/>
+          <text x="268" y="444" class="eyebrow">METRIC</text>
+          <text x="268" y="480" class="node-title">운영 지표 예측</text>
+          <text x="268" y="512" class="node-sub">delay / loss</text>
+          <text x="268" y="536" class="node-sub">traffic matrix</text>
+          <text x="268" y="560" class="node-sub">flow completion time</text>
 
-        <rect x="784" y="184" width="128" height="128" rx="8" fill="#ffffff"/>
-        <rect x="784" y="184" width="128" height="128" rx="8" fill="none" stroke="#5b6472" stroke-width="1"/>
-        <text x="804" y="216" class="eyebrow">DECIDE</text>
-        <text x="804" y="244" class="node-title">운영 판단</text>
-        <text x="804" y="272" class="node-sub">routing</text>
-        <text x="804" y="292" class="node-sub">config</text>
-        <text x="804" y="312" class="node-sub">security</text>
+          <rect x="776" y="400" width="280" height="184" rx="8" fill="#ffffff"/>
+          <rect x="776" y="400" width="280" height="184" rx="8" fill="none" stroke="#5b6472" stroke-width="1.2"/>
+          <text x="804" y="444" class="eyebrow">DECIDE</text>
+          <text x="804" y="480" class="node-title">운영 판단</text>
+          <text x="804" y="512" class="node-sub">routing</text>
+          <text x="804" y="536" class="node-sub">configuration</text>
+          <text x="804" y="560" class="node-sub">security response</text>
 
-        <path d="M48 392 H912" stroke="rgba(61,65,68,0.12)" stroke-width="1"/>
-        <text x="48" y="428" class="legend">NODE = router / flow</text>
-        <text x="260" y="428" class="legend">EDGE = link / path</text>
-        <text x="464" y="428" class="legend">FEATURE = traffic / delay / bandwidth</text>
-        <text x="48" y="464" class="note">강조점: 모델 이름보다 먼저 graph definition이 선명해야 합니다.</text>
-      </svg>
+          <path d="M64 604 H1056" stroke="rgba(61,65,68,0.12)" stroke-width="1"/>
+          <text x="64" y="626" class="note">강조점: 모델 이름보다 먼저 graph definition이 선명해야 합니다.</text>
+        </svg>
+      </div>
     </main>
   </body>
 </html>

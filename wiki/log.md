@@ -172,3 +172,10 @@ tags:
 - `diagram-design` 스킬을 설치하고 `https://shimhy97.github.io`와 로컬 블로그 테마 기준으로 다이어그램 토큰을 맞췄다.
 - `assets/diagrams/gnn-gcn-wired-communication-networks/`에 통신망 입력 흐름, message passing, GCN layer pipeline HTML artifact 3개를 추가했다.
 - `_posts/2026-04-21-gnn-gcn-wired-communication-networks.md`에서 기존 Mermaid 2개를 iframe 다이어그램으로 교체하고, message passing 설명용 다이어그램을 본문에 추가했다.
+
+## [2026-04-23] fix | GNN/GCN diagram 가독성 보강
+
+- 다이어그램 iframe이 기본 높이와 좁은 figure 폭에 눌려 작게 보이는 문제를 고치기 위해 `assets/css/main.scss`의 diagram figure/frame 규칙을 wide article figure 기준으로 조정했다.
+- 세 HTML artifact를 블로그 본문용 큰 카드 레이아웃으로 다시 그리고, node/card 내부 여백과 텍스트 크기 기준을 올렸다.
+- 수식이 들어가는 diagram artifact는 자체 MathJax 설정으로 렌더링하도록 바꾸고, 같은 문제가 반복되지 않도록 `docs/technical-post-writing-guide.md`와 로컬 `diagram-design` 스킬에 가독성 규칙을 추가했다.
+- 배포 화면에서 viewport가 넓을 때 figure 폭은 커지지만 iframe 높이가 고정되어 아래가 잘리는 문제가 남아, diagram figure 최대 폭을 줄이고 iframe 높이를 artifact aspect-ratio에 맞추도록 다시 조정했다.

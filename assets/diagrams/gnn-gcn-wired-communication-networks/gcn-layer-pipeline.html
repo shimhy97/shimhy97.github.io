@@ -3,8 +3,21 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>GCN layer pipeline</title>
+    <title>GCN layer에서 node 축 집계와 feature 축 변환이 이어지는 순서</title>
     <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Geist:wght@400;500;600&family=Geist+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    <script>
+      window.MathJax = {
+        tex: {
+          inlineMath: [['\\(', '\\)']],
+          processEscapes: true
+        },
+        options: {
+          enableMenu: false,
+          skipHtmlTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      };
+    </script>
+    <script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js"></script>
     <style>
       :root {
         --paper: #fafaf7;
@@ -14,7 +27,6 @@
         --rule: rgba(61, 65, 68, 0.12);
         --accent: #1f6feb;
         --accent-tint: rgba(31, 111, 235, 0.08);
-        --link: #3b9cba;
       }
 
       html,
@@ -24,142 +36,216 @@
       }
 
       body {
+        overflow-x: auto;
+        overflow-y: hidden;
         font-family: Geist, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
         color: var(--ink);
       }
 
       .sheet {
-        box-sizing: border-box;
         width: 100%;
+        min-width: 760px;
         background: var(--paper);
       }
 
+      .canvas {
+        position: relative;
+        width: 100%;
+        aspect-ratio: 1120 / 640;
+      }
+
       svg {
+        position: absolute;
+        inset: 0;
         display: block;
         width: 100%;
-        height: auto;
+        height: 100%;
       }
 
       .title {
         font-family: "Instrument Serif", Georgia, serif;
-        font-size: 32px;
+        font-size: 36px;
         font-weight: 400;
         fill: var(--ink);
       }
 
       .subtitle,
       .note {
-        font-size: 12px;
+        font-size: 16px;
         fill: var(--muted);
       }
 
       .eyebrow,
-      .mono,
-      .arrow-label {
+      .arrow-label,
+      .axis-label {
         font-family: "Geist Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
         letter-spacing: 0;
       }
 
       .eyebrow {
-        font-size: 8px;
-        font-weight: 500;
+        font-size: 11px;
+        font-weight: 600;
         fill: var(--soft);
       }
 
       .node-title {
-        font-size: 16px;
+        font-size: 18px;
         font-weight: 600;
         fill: var(--ink);
       }
 
-      .mono {
-        font-size: 12px;
-        fill: var(--muted);
-      }
-
-      .formula {
+      .node-sub {
         font-family: "Geist Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
-        font-size: 12px;
-        fill: var(--ink);
+        font-size: 14px;
+        fill: var(--muted);
       }
 
       .arrow-label {
-        font-size: 8px;
+        font-size: 12px;
         fill: var(--muted);
+      }
+
+      .axis-label {
+        font-size: 13px;
+        fill: var(--muted);
+      }
+
+      .math-label {
+        position: absolute;
+        z-index: 2;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: var(--ink);
+        font-size: clamp(15px, 1.45vw, 20px);
+        line-height: 1.3;
+        text-align: center;
+        pointer-events: none;
+      }
+
+      .math-label--input {
+        top: 40%;
+        left: 6.3%;
+        width: 13.6%;
+      }
+
+      .math-label--aggregate {
+        top: 40%;
+        left: 24.8%;
+        width: 14.8%;
+      }
+
+      .math-label--transform {
+        top: 39.8%;
+        left: 43.4%;
+        width: 15.4%;
+      }
+
+      .math-label--activation {
+        top: 40%;
+        left: 62%;
+        width: 13.6%;
+      }
+
+      .math-label--output {
+        top: 40%;
+        left: 80.5%;
+        width: 14.5%;
+      }
+
+      .math-label .MathJax {
+        font-size: 100% !important;
       }
     </style>
   </head>
   <body>
-    <main class="sheet" aria-label="GCN layer에서 노드 축 집계와 피처 축 변환이 이어지는 순서">
-      <svg viewBox="0 0 960 500" role="img" aria-labelledby="title desc">
-        <title id="title">GCN layer pipeline</title>
-        <desc id="desc">현재 노드 피처가 정규화된 adjacency로 이웃과 섞이고, weight matrix로 피처 변환된 뒤 활성화를 거쳐 다음 layer 표현이 되는 과정</desc>
-        <defs>
-          <marker id="arrow" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
-            <polygon points="0 0, 8 3, 0 6" fill="#5b6472"/>
-          </marker>
-          <marker id="arrow-accent" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
-            <polygon points="0 0, 8 3, 0 6" fill="#1f6feb"/>
-          </marker>
-        </defs>
+    <main class="sheet" aria-label="GCN layer에서 node 축 집계와 feature 축 변환이 이어지는 순서">
+      <div class="canvas">
+        <svg viewBox="0 0 1120 640" role="img" aria-labelledby="title desc">
+          <title id="title">GCN layer pipeline</title>
+          <desc id="desc">GCN layer가 입력 표현, 정규화 인접행렬을 통한 노드 축 집계, 학습 행렬을 통한 feature 축 변환, 활성화 함수를 거쳐 다음 표현을 만드는 다이어그램</desc>
+          <defs>
+            <marker id="arrow" markerWidth="10" markerHeight="8" refX="9" refY="4" orient="auto">
+              <polygon points="0 0, 10 4, 0 8" fill="#5b6472"/>
+            </marker>
+            <marker id="arrow-accent" markerWidth="10" markerHeight="8" refX="9" refY="4" orient="auto">
+              <polygon points="0 0, 10 4, 0 8" fill="#1f6feb"/>
+            </marker>
+          </defs>
 
-        <rect width="960" height="500" fill="#fafaf7"/>
+          <rect width="1120" height="640" fill="#fafaf7"/>
 
-        <text x="48" y="56" class="title">GCN 식은 node 축과 feature 축을 차례로 건드립니다</text>
-        <text x="48" y="84" class="subtitle">Ahat은 왼쪽에서 노드 관계를 섞고, W는 오른쪽에서 각 노드의 feature 의미를 바꿉니다.</text>
+          <text x="64" y="66" class="title">GCN 식은 두 축의 일을 한 줄로 압축합니다</text>
+          <text x="64" y="100" class="subtitle">왼쪽 곱은 node 축에서 이웃을 섞고, 오른쪽 곱은 feature 축에서 표현을 바꿉니다.</text>
 
-        <path d="M188 236 H220" stroke="#5b6472" stroke-width="1.2" marker-end="url(#arrow)"/>
-        <path d="M360 236 H392" stroke="#1f6feb" stroke-width="1.2" marker-end="url(#arrow-accent)"/>
-        <path d="M532 236 H564" stroke="#5b6472" stroke-width="1.2" marker-end="url(#arrow)"/>
-        <path d="M704 236 H736" stroke="#5b6472" stroke-width="1.2" marker-end="url(#arrow)"/>
+          <path d="M224 276 H272" stroke="#5b6472" stroke-width="1.4" marker-end="url(#arrow)"/>
+          <path d="M432 276 H480" stroke="#1f6feb" stroke-width="1.4" marker-end="url(#arrow-accent)"/>
+          <path d="M640 276 H688" stroke="#5b6472" stroke-width="1.4" marker-end="url(#arrow)"/>
+          <path d="M848 276 H896" stroke="#5b6472" stroke-width="1.4" marker-end="url(#arrow)"/>
 
-        <rect x="200" y="212" width="32" height="16" fill="#fafaf7"/>
-        <text x="204" y="224" class="arrow-label">MIX</text>
-        <rect x="372" y="212" width="48" height="16" fill="#fafaf7"/>
-        <text x="376" y="224" class="arrow-label">PROJECT</text>
-        <rect x="544" y="212" width="36" height="16" fill="#fafaf7"/>
-        <text x="548" y="224" class="arrow-label">RELU</text>
+          <rect x="236" y="248" width="48" height="24" fill="#fafaf7"/>
+          <text x="244" y="266" class="arrow-label">mix</text>
+          <rect x="444" y="248" width="68" height="24" fill="#fafaf7"/>
+          <text x="452" y="266" class="arrow-label">project</text>
+          <rect x="652" y="248" width="54" height="24" fill="#fafaf7"/>
+          <text x="660" y="266" class="arrow-label">shape</text>
+          <rect x="860" y="248" width="48" height="24" fill="#fafaf7"/>
+          <text x="868" y="266" class="arrow-label">next</text>
 
-        <rect x="48" y="172" width="140" height="128" rx="8" fill="#ffffff"/>
-        <rect x="48" y="172" width="140" height="128" rx="8" fill="none" stroke="#3d4144" stroke-width="1"/>
-        <text x="68" y="204" class="eyebrow">INPUT</text>
-        <text x="68" y="236" class="formula">H(l)</text>
-        <text x="68" y="264" class="mono">current node</text>
-        <text x="68" y="284" class="mono">features</text>
+          <rect x="64" y="178" width="160" height="196" rx="8" fill="#ffffff"/>
+          <rect x="64" y="178" width="160" height="196" rx="8" fill="none" stroke="#3d4144" stroke-width="1.2"/>
+          <text x="92" y="222" class="eyebrow">INPUT</text>
+          <text x="92" y="330" class="node-title">입력 표현</text>
+          <text x="92" y="354" class="node-sub">node x feature</text>
 
-        <rect x="220" y="172" width="140" height="128" rx="8" fill="#fafaf7"/>
-        <rect x="220" y="172" width="140" height="128" rx="8" fill="rgba(31,111,235,0.08)" stroke="#1f6feb" stroke-width="1.2"/>
-        <text x="240" y="204" class="eyebrow">NODE AXIS</text>
-        <text x="240" y="236" class="formula">Ahat H(l)</text>
-        <text x="240" y="264" class="mono">self + neighbor</text>
-        <text x="240" y="284" class="mono">aggregation</text>
+          <rect x="272" y="178" width="160" height="196" rx="8" fill="#fafaf7"/>
+          <rect x="272" y="178" width="160" height="196" rx="8" fill="rgba(31,111,235,0.08)" stroke="#1f6feb" stroke-width="1.4"/>
+          <text x="300" y="222" class="eyebrow">AGGREGATE</text>
+          <text x="300" y="330" class="node-title">node 축 집계</text>
+          <text x="300" y="354" class="node-sub">topology mixing</text>
 
-        <rect x="392" y="172" width="140" height="128" rx="8" fill="#ffffff"/>
-        <rect x="392" y="172" width="140" height="128" rx="8" fill="none" stroke="#3d4144" stroke-width="1"/>
-        <text x="412" y="204" class="eyebrow">FEATURE AXIS</text>
-        <text x="412" y="236" class="formula">Ahat H(l) W(l)</text>
-        <text x="412" y="264" class="mono">learned feature</text>
-        <text x="412" y="284" class="mono">projection</text>
+          <rect x="480" y="178" width="160" height="196" rx="8" fill="#ffffff"/>
+          <rect x="480" y="178" width="160" height="196" rx="8" fill="none" stroke="#3d4144" stroke-width="1.2"/>
+          <text x="508" y="222" class="eyebrow">TRANSFORM</text>
+          <text x="508" y="330" class="node-title">feature 변환</text>
+          <text x="508" y="354" class="node-sub">learned weights</text>
 
-        <rect x="564" y="172" width="140" height="128" rx="8" fill="#ffffff"/>
-        <rect x="564" y="172" width="140" height="128" rx="8" fill="none" stroke="#5b6472" stroke-width="1"/>
-        <text x="584" y="204" class="eyebrow">NONLINEAR</text>
-        <text x="584" y="236" class="formula">sigma(.)</text>
-        <text x="584" y="264" class="mono">ReLU or other</text>
-        <text x="584" y="284" class="mono">activation</text>
+          <rect x="688" y="178" width="160" height="196" rx="8" fill="#ffffff"/>
+          <rect x="688" y="178" width="160" height="196" rx="8" fill="none" stroke="#5b6472" stroke-width="1.2"/>
+          <text x="716" y="222" class="eyebrow">ACTIVATE</text>
+          <text x="716" y="330" class="node-title">비선형화</text>
+          <text x="716" y="354" class="node-sub">ReLU etc.</text>
 
-        <rect x="736" y="172" width="160" height="128" rx="8" fill="#ffffff"/>
-        <rect x="736" y="172" width="160" height="128" rx="8" fill="none" stroke="#5b6472" stroke-width="1"/>
-        <text x="756" y="204" class="eyebrow">OUTPUT</text>
-        <text x="756" y="236" class="formula">H(l+1)</text>
-        <text x="756" y="264" class="mono">new node</text>
-        <text x="756" y="284" class="mono">representation</text>
+          <rect x="896" y="178" width="160" height="196" rx="8" fill="#ffffff"/>
+          <rect x="896" y="178" width="160" height="196" rx="8" fill="none" stroke="#5b6472" stroke-width="1.2"/>
+          <text x="924" y="222" class="eyebrow">OUTPUT</text>
+          <text x="924" y="330" class="node-title">다음 표현</text>
+          <text x="924" y="354" class="node-sub">updated nodes</text>
 
-        <rect x="160" y="360" width="640" height="72" rx="8" fill="#ffffff"/>
-        <rect x="160" y="360" width="640" height="72" rx="8" fill="none" stroke="rgba(61,65,68,0.12)" stroke-width="1"/>
-        <text x="184" y="392" class="node-title">shape로 읽는 기준</text>
-        <text x="184" y="420" class="mono">Ahat: N x N, node-to-node relation.   W: d x d', feature-to-feature transform.</text>
-      </svg>
+          <rect x="176" y="452" width="768" height="92" rx="8" fill="#ffffff"/>
+          <rect x="176" y="452" width="768" height="92" rx="8" fill="none" stroke="rgba(61,65,68,0.12)" stroke-width="1.2"/>
+          <text x="212" y="490" class="axis-label">node axis</text>
+          <text x="364" y="490" class="note">정규화된 자기 자신 + 이웃 feature를 섞습니다.</text>
+          <text x="212" y="524" class="axis-label">feature axis</text>
+          <text x="364" y="524" class="note">학습 행렬이 feature 의미를 새 표현 공간으로 바꿉니다.</text>
+
+          <path d="M64 592 H1056" stroke="rgba(61,65,68,0.12)" stroke-width="1"/>
+          <text x="64" y="616" class="note">괄호 위치는 설명 순서이고, 차원이 맞으면 행렬곱의 결합법칙은 그대로 성립합니다.</text>
+        </svg>
+
+        <div class="math-label math-label--input">\(H^{(l)}\)</div>
+        <div class="math-label math-label--aggregate">\(\hat{A}H^{(l)}\)</div>
+        <div class="math-label math-label--transform">\(\hat{A}H^{(l)}W^{(l)}\)</div>
+        <div class="math-label math-label--activation">\(\sigma(\cdot)\)</div>
+        <div class="math-label math-label--output">\(H^{(l+1)}\)</div>
+      </div>
     </main>
+    <script>
+      window.addEventListener('load', function () {
+        if (window.MathJax && window.MathJax.typesetPromise) {
+          window.MathJax.typesetPromise();
+        }
+      });
+    </script>
   </body>
 </html>

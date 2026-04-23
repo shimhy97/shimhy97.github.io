@@ -37,21 +37,39 @@
 }
 
 .page__content .diagram-figure {
-  margin: 2rem auto 2.25rem;
+  display: block;
+  width: 100%;
+  margin: 2.25rem auto 2.5rem;
 }
 
 .page__content .diagram-frame {
   display: block;
   width: 100%;
   height: auto;
-  aspect-ratio: 960 / 520;
+  min-height: 440px;
+  max-height: 640px;
+  aspect-ratio: 1120 / 640;
   border: 1px solid rgba(61, 65, 68, 0.12);
   border-radius: 8px;
   background: #fafaf7;
 }
 
+.page__content .diagram-frame--tall {
+  min-height: 500px;
+  max-height: 720px;
+  aspect-ratio: 1120 / 720;
+}
+
 .page__content figcaption.figure-caption {
   margin-top: 0.65rem;
+}
+
+.page__content .diagram-figure > figcaption.figure-caption {
+  display: block;
+  width: 100%;
+  max-width: 52rem;
+  margin-right: auto;
+  margin-left: auto;
 }
 
 .reading-post .page__content > :not(.sidebar__right) {
@@ -70,7 +88,11 @@
 }
 
 .reading-post .page__content > .diagram-figure {
-  max-width: 52rem;
+  position: relative;
+  left: 50%;
+  width: min(100vw - 2rem, 56rem);
+  max-width: none;
+  transform: translateX(-50%);
 }
 
 .reading-post .page__content > h2,
